@@ -10,14 +10,16 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class OurFirstgame implements ApplicationListener {
+public class OurFirstgame implements ApplicationListener
+{
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
 	private Texture texture;
 	private Sprite sprite;
 	
 	@Override
-	public void create() {		
+	public void create()
+	{
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
@@ -42,25 +44,35 @@ public class OurFirstgame implements ApplicationListener {
 	}
 
 	@Override
-	public void render() {		
+	public void render()
+	{
+		// draw a black background
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
+		// get ready to draw images...
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+		
+		// draw the sprite (the libgdx logo)
 		sprite.draw(batch);
+		
+		// done drawing images
 		batch.end();
 	}
 
 	@Override
-	public void resize(int width, int height) {
+	public void resize(int width, int height)
+	{ // this gets called automatically whenever the window gets resized.  probably won't add anything here.
 	}
 
 	@Override
-	public void pause() {
+	public void pause()
+	{ // this gets called automatically if the game gets paused, particularly on Android (if the game gets minimized)
 	}
 
 	@Override
-	public void resume() {
+	public void resume()
+	{ // and this is just called automatically when the game gets resumed.
 	}
 }
