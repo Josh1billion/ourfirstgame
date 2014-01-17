@@ -1,0 +1,1 @@
+Welcome to the project!  This is our first game.  So far, it's just a Libgdx skeleton application, so it doesn't do much.
