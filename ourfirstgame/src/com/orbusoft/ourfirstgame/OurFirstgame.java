@@ -1,5 +1,10 @@
 package com.orbusoft.ourfirstgame;
 
+/*
+ * Note: This class shouldn't need to be modified much, if at all.
+ * 		 See Game.java for the actual game logic and drawing code.
+ */
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
@@ -9,56 +14,60 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.josh.graphicsengine2d.Globals;
 
-public class OurFirstgame implements ApplicationListener
+public class OurFirstGame implements ApplicationListener
 {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
-	private Texture texture;
-	private Sprite sprite;
-	
 	@Override
 	public void create()
 	{
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
+
+		Globals.game = new Game();
+		Globals.game.init();
 		
-		camera = new OrthographicCamera(1, h/w);
-		batch = new SpriteBatch();
-		
-		texture = new Texture(Gdx.files.internal("data/libgdx.png"));
-		texture.setFilter(TextureFilter.Linear, TextureFilter.Linear);
-		
-		TextureRegion region = new TextureRegion(texture, 0, 0, 512, 275);
-		
-		sprite = new Sprite(region);
-		sprite.setSize(0.9f, 0.9f * sprite.getHeight() / sprite.getWidth());
-		sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-		sprite.setPosition(-sprite.getWidth()/2, -sprite.getHeight()/2);
+		Globals.SCREEN_WIDTH = (int)w;
+		Globals.SCREEN_HEIGHT = (int)h;
 	}
 
 	@Override
-	public void dispose() {
-		batch.dispose();
-		texture.dispose();
+	public void dispose()
+	{
+	}
+
+	
+	public void tick(float delta)
+	{
+		// poll the mouse/touchscreen
+		if (!Gdx.input.isTouched())
+			Input.mouseClick = 0;
+		else if (Input.mouseClick > 0)
+			Input.mouseClick = 2;
+		else
+			Input.mouseClick = 1;
+		Input.mouseX = Gdx.input.getX();
+		Input.mouseY = Gdx.input.getY();
+		
+		// tick the game
+		Globals.game.tick(delta);
 	}
 
 	@Override
 	public void render()
 	{
+		// perform the game logic
+		tick(Gdx.graphics.getDeltaTime());
+		
 		// draw a black background
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		// get ready to draw images...
-		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		
-		// draw the sprite (the libgdx logo)
-		sprite.draw(batch);
-		
-		// done drawing images
-		batch.end();
+		// call the game's drawing code
+		Globals.game.g.batch.begin();
+		Globals.game.draw();
+		Globals.game.g.batch.end();
+
 	}
 
 	@Override

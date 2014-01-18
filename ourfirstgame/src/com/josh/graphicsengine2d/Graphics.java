@@ -1,0 +1,340 @@
+package com.josh.graphicsengine2d;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
+
+public class Graphics
+{
+	public GL20 gl = null;
+	public SpriteBatch batch; // for drawing text
+	private Font currentFont = null;
+	private OrthographicCamera camera = null;
+	private ShaderProgram mainImageShader = null;
+
+	Light[] diffuseLights = new Light[10];
+	Light[] specularLights = new Light[10];
+	Vector3 ambientLight = new Vector3(0.0f, 0.0f, 0.0f);
+	
+	private float alpha = 1.0f;
+	
+	private float fadeLevel = 1.0f;
+	
+	/*
+	 * setZoom()
+	 * Parameters:
+	 * 	float zoomLevel - how far to zoom (1.0f = normal zoom, 0.5f = zoomed halfway out, 3.0f = zoomed in x3)
+	*/
+	public void setZoom(float zoomLevel)
+	{
+		if (zoomLevel > 0.0f && zoomLevel < 1.0f)
+			zoomLevel = 1.0f / zoomLevel;
+		else if (zoomLevel > 1.0f)
+			zoomLevel = 1.0f / zoomLevel;
+		camera.zoom = zoomLevel;
+		camera.update();
+	}
+	
+	public void setAmbientLight(float r0to255, float g0to255, float b0to255)
+	{
+		ambientLight.set(r0to255 / 255.0f, g0to255 / 255.0f, b0to255 / 255.0f);
+	}
+	
+	public Light createDiffuseLight(float x, float y, float r0to255, float g0to255, float b0to255, float innerRadius, float outerRadius) throws Exception
+	{
+		int index = -1;
+		for (int i = 0; i < 10; i++)
+			if (diffuseLights[i] == null)
+			{
+				index = i;
+				break;
+			}
+
+		if (index < 0)
+			throw new Exception("Too many diffuse lights already exist.  Diffuse light could not be created in createDiffuseLight().");
+		else
+		{
+			diffuseLights[index] = new Light(this, index, Light.LightType.LIGHT_DIFFUSE, x, y, r0to255, g0to255, b0to255, innerRadius, outerRadius);
+			return diffuseLights[index];
+		}
+	}
+	
+	public void removeLight(Light light) throws Exception
+	{
+		for (int i = 0; i < 10; i++)
+			if (diffuseLights[i] == light)
+			{
+				diffuseLights[i] = null;
+				return;
+			}
+		
+		for (int i = 0; i < 10; i++)
+			if (specularLights[i] == light)
+			{
+				specularLights[i] = null;
+				return;
+			}
+		
+	}
+	
+	public void drawImage(Image image, float alpha, float x, float y, float scaleX, float scaleY)
+	{ // to-do: incorporate alpha
+		image.render(this, gl, alpha, x, y, scaleX, scaleY);
+	}
+	
+	public void drawImage(Image image, float alpha, float x, float y)
+	{ // to-do: incorporate alpha
+		drawImage(image, alpha, x, y, 1.0f, 1.0f);
+	}
+	
+	
+	
+	public void drawImage(Image image, float alpha, float x, float y, int src_x, int src_y, int src_width, int src_height)
+	{ // to-do: this, and incorporate alpha
+		image.render(this, gl, alpha, x, y);
+	}
+	
+	public void setAlpha(float newAlpha)
+	{
+		alpha = newAlpha;
+		if (alpha > 1.0f)
+			alpha = 1.0f;
+		if (alpha < 0.0f)
+			alpha = 0.0f;
+	}
+	
+	public float getAlpha()
+	{
+		return alpha;
+	}
+	
+	public void uploadLightsToShader(ShaderProgram shader)
+	{ // called internally by Image.render().  no need to call it manually.
+		shader.setUniformf("ambientLight", ambientLight);
+		
+		for (int i = 0; i < 10; i++)
+			if (diffuseLights[i] != null)
+				diffuseLights[i].activateOnShader(shader);
+		
+		for (int i = 0; i < 10; i++)
+			if (specularLights[i] != null)
+				specularLights[i].activateOnShader(shader);
+	}
+	
+	public void uploadFadeLevelToShader(ShaderProgram shader)
+	{ // called internally by Image.render().  no need to call it manually.
+		shader.setUniformf("fadeLevel", fadeLevel);		
+	}
+	
+	
+	public Graphics()
+	{
+		float w = Gdx.graphics.getWidth();
+		float h = Gdx.graphics.getHeight();
+		
+		camera = new OrthographicCamera(w, h);
+		camera.setToOrtho(true, w, h);
+		camera.update();
+		
+		
+		batch = new SpriteBatch();
+		
+		batch.setProjectionMatrix(camera.combined);
+		
+		
+		/*
+		
+		String textShaderVertex = "attribute vec4 a_position;\n" + 
+				"attribute vec4 a_color;\n" + 
+				"attribute vec2 a_texCoord0;\n" + 
+				"uniform sampler2D u_texture;\n" + 
+				"\n" + 
+				"uniform mat4 u_projTrans;\n" + 
+				"\n" + 
+				"varying vec4 v_color;\n" + 
+				"varying vec2 v_texCoords;\n" + 
+				"\n" + 
+				"void main() {\n" + 
+				"    v_color = a_color;\n" + 
+				"    v_texCoords = a_texCoord0;\n" +
+				"	 float scaleAmount = 1.0f;" +
+				"    gl_Position = u_projTrans * (a_position * mat4(scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, scaleAmount, 0.0f,  0.0f, 0.0f, 0.0f, scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));\n" + 
+				"}" ;
+		
+		String textShaderFragment = "    precision mediump float;\n" + 
+				"\n" + 
+				"varying vec4 v_color;\n" + 
+				"varying vec2 v_texCoords;\n" + 
+				"uniform sampler2D u_texture;\n" + 
+				"\n" + 
+				"void main() {\n" + 
+				"	 vec4 resultColor = v_color * texture2D(u_texture, v_texCoords);\n" +
+				"	 \n" +
+				"	 \n" + 
+				"    gl_FragColor = resultColor;\n" + 
+				"}";
+		
+		
+		
+		ShaderProgram textShader = new ShaderProgram(textShaderVertex, textShaderFragment);
+		textShader.pedantic = false;
+		if(!textShader.isCompiled()) {
+	        Gdx.app.log("Problem compiling text shader:", textShader.getLog());
+	    }
+		
+		//batch.setProjectionMatrix(new Matrix4(new float[] { scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, scaleAmount, 0.0f,0.0f, 0.0f, 0.0f, scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}));
+		batch.setShader(textShader);
+		*/
+		
+		gl = Gdx.gl20;
+		
+		gl.glEnable(GL20.GL_TEXTURE_2D);
+		gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL20.GL_BLEND);
+		/*
+		String vertexShader = "attribute vec4 a_position;    \n" + 
+				"attribute vec4 a_color;\n" +
+				"attribute vec4 a_color2;\n" +
+                "uniform vec3 ambientLight;\n" +
+
+				"uniform vec3 lightPositions[10];\n" +
+                "uniform vec3 lightColors[10];\n" +
+                "uniform float lightInnerRadiuses[10];\n" +
+                "uniform float lightOuterRadiuses[10];\n" +
+                "uniform float scaleX;\n" +
+                "uniform float scaleY;\n" +
+            
+                "attribute vec2 a_texCoord0;\n" + 
+                "uniform mat4 u_worldView;\n" +  
+                "uniform mat4 u_transformation;\n" + 
+                "varying vec4 v_color;" + 
+                "varying vec2 v_texCoords;" + 
+                "varying vec3 normal; \n" + 
+                "varying vec3 vertex_to_light_vectors[10]; \n" + 
+                
+                
+                "void main()                  \n" + 
+                "{                            \n" + 
+                "   v_texCoords = a_texCoord0; \n" +
+                
+                "	mat4 scaleMatrix = mat4(vec4(scaleX, 0.0f, 0.0f, 0.0f), vec4(0.0f, scaleY, 0.0f, 0.0f), vec4(0.0f, 0.0f, 1.0f, 0.0f), vec4(0.0f, 0.0f, 0.0f, 1.0f));  \n" +
+
+                "   gl_Position =  u_worldView  * (a_position * (scaleMatrix * u_transformation));  \n"      +     
+
+				"    // Transforming The Normal To ModelView-Space\r\n" + 
+				"    normal = gl_NormalMatrix * gl_Normal;\r\n" + 
+				" \r\n" + 
+				"    // Transforming The Vertex Position To ModelView-Space\r\n" + 
+				"    vec4 vertex_in_modelview_space = gl_ModelViewMatrix * (a_position * u_transformation);\n" +
+				"// Calculating The Vector From The Vertex Position To The Light Position\r\n" + 
+				"	for (int i = 0; i < 10; i++) vertex_to_light_vectors[i] = lightPositions[i] - vertex_in_modelview_space.xyz;" +
+				
+                "}                            \n" ;
+		String fragmentShader = "precision mediump float;\n" + 
+                  "varying vec4 v_color;\n" + 
+                  "varying vec2 v_texCoords;\n" + 
+                  "uniform sampler2D u_texture;\n" + 
+                  
+                  "uniform vec3 ambientLight;\n" +
+                  "uniform vec3 lightColors[10];\n" +
+                  "uniform float lightInnerRadiuses[10];\n" +
+                  "uniform float lightOuterRadiuses[10];\n" +
+                  "uniform float fadeLevel;\n" +
+                  
+                  "varying vec3 normal; \n" + 
+                  "varying vec3 vertex_to_light_vectors[10]; \n" + 
+                  
+                  "void main()                                  \n" + 
+                  "{                                            \n" + 
+
+                    "    vec4 combinedLightColor = vec4(0.0f, 0.0f, 0.0f, 1.0f); \n" +
+                    "	 for (int i = 0; i < 10; i++)\n" +
+                    "	   if (lightInnerRadiuses[i] > 0.0f || lightOuterRadiuses[i] > 0.0f) \n" +
+                    "	   { \n" +
+					"        vec4 DiffuseColor = vec4(lightColors[i], 1.0);\r\n" + 
+
+					"        float lightInnerRadius = lightInnerRadiuses[i];\n" +
+					"	     float lightOuterRadius = lightOuterRadiuses[i]; \n" +
+					"	     float distanceToLight = length(vertex_to_light_vectors[i]);\n" +
+				
+					"        float DiffuseTerm = 1.0f;" +
+					"	     if (distanceToLight < lightInnerRadius) DiffuseTerm = 1.0f; else { \n" +
+					"          DiffuseTerm = 1.0f - (distanceToLight - lightInnerRadius)/lightOuterRadius;" +
+					"	     } \n" +
+					"	     DiffuseTerm = max(0.0f, min(1.0f, (DiffuseTerm)));	\n" +
+					"	     combinedLightColor += vec4(DiffuseColor * DiffuseTerm); \n" +
+					"	     combinedLightColor *= vec4(fadeLevel, fadeLevel, fadeLevel, 1.0f); \n" +
+					"	   }\n" +
+					"	combinedLightColor = vec4(min(1.0f, combinedLightColor.x), min(1.0f, combinedLightColor.y), min(1.0f, combinedLightColor.z), 0.0f); \n" +
+
+                  "  gl_FragColor = (vec4(ambientLight, 1.0f) + combinedLightColor) * texture2D(u_texture, v_texCoords);\n" +
+                  "}";
+		
+		 mainImageShader = new ShaderProgram(vertexShader, fragmentShader);
+		 if (mainImageShader.isCompiled() == false)
+		 {
+	         Gdx.app.log("ShaderError in mainImageShader:", mainImageShader.getLog());
+	     }
+		 
+		 ConvolveOp.Init(); // initialize ConvolveOp shaders
+		 */
+			 
+			 
+	}
+	
+	public void setFont(Font font)
+	{
+		currentFont = font;
+	}
+		
+	public void drawString(String textToDraw, int x, int y, int r0to255, int g0to255, int b0to255)
+	{ // to-do: incorporate alpha
+		if (currentFont == null)
+		{
+			Gdx.app.debug("Error", "Error when calling drawText(): no font has been set yet (with Graphics.setFont())");
+			return;
+		}
+		
+		currentFont.render(batch, textToDraw, x, Globals.SCREEN_HEIGHT - y, r0to255, g0to255, b0to255);
+		
+		gl.glEnable(GL20.GL_TEXTURE_2D);
+		gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL20.GL_BLEND);
+	}
+	
+	public void drawString(String textToDraw, int x, int y)
+	{ // to-do: incorporate alpha
+		if (currentFont == null)
+		{
+			Gdx.app.debug("Error", "Error when calling drawText(): no font has been set yet (with Graphics.setFont())");
+			return;
+		}
+		
+		currentFont.render(batch, textToDraw, x, Gdx.graphics.getHeight() - y);
+		
+		gl.glEnable(GL20.GL_TEXTURE_2D);
+		gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		gl.glEnable(GL20.GL_BLEND);
+	}
+	
+	public void setFadeLevel(float amount)
+	{ // to-do: this
+		if (fadeLevel < 0.0f || fadeLevel > 1.0f)
+			System.out.println("Error when calling setFadeLevel(): fade amount must be >= 0.0f and <= 1.0f");
+		fadeLevel = amount;
+	}
+	
+	public void translate(float x, float y)
+	{
+		camera.translate(x, y);
+	}
+
+	public void scale(float x, float y)
+	{ // to-do: this
+	}
+	
+}
