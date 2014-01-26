@@ -1,9 +1,9 @@
 package com.orbusoft.ourfirstgame.client;
 
-import com.orbusoft.ourfirstgame.OurFirstgame;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
+import com.orbusoft.ourfirstgame.OurFirstGame;
 
 public class GwtLauncher extends GwtApplication {
 	@Override
@@ -14,6 +14,6 @@ public class GwtLauncher extends GwtApplication {
 
 	@Override
 	public ApplicationListener getApplicationListener () {
-		return new OurFirstgame();
+		return new OurFirstGame();
 	}
 }

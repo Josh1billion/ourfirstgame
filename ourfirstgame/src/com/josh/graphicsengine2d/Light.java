@@ -30,7 +30,7 @@ public class Light
 	}
 	
 	public void activateOnShader(ShaderProgram shader)
-	{ // called internally by Graphics.
+	{ // called internally by Graphics.  shouldn't be called elsewhere in the game code, so just ignore this method...
 		shader.setUniformf("lightPositions[" + index + "]", new Vector3(x, y, 0.0f));
 		shader.setUniformf("lightColors[" + index + "]", new Vector3(red, green, blue));
 		shader.setUniformf("lightInnerRadiuses[" + index + "]", innerRadius);
