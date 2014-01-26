@@ -8,6 +8,7 @@ package com.orbusoft.ourfirstgame;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
@@ -61,12 +62,13 @@ public class OurFirstGame implements ApplicationListener
 		
 		// draw a black background
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 		
 		// call the game's drawing code
-		Globals.game.g.batch.begin();
+		//Globals.game.g.batch.begin();
 		Globals.game.draw();
-		Globals.game.g.batch.end();
+		//Globals.game.g.batch.end();
 
 	}
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
+import com.josh.graphicsengine2d.Globals;
 
 public class Graphics
 {
@@ -81,21 +82,21 @@ public class Graphics
 		
 	}
 	
-	public void drawImage(Image image, float alpha, float x, float y, float scaleX, float scaleY)
+	public void drawImage(Image image, float x, float y, float scaleX, float scaleY)
 	{ // to-do: incorporate alpha
-		image.render(this, gl, alpha, x, y, scaleX, scaleY);
+		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY);
 	}
 	
-	public void drawImage(Image image, float alpha, float x, float y)
+	public void drawImage(Image image, float x, float y)
 	{ // to-do: incorporate alpha
-		drawImage(image, alpha, x, y, 1.0f, 1.0f);
+		drawImage(image, x, y, 1.0f, 1.0f);
 	}
 	
 	
 	
-	public void drawImage(Image image, float alpha, float x, float y, int src_x, int src_y, int src_width, int src_height)
+	public void drawImage(Image image, float x, float y, int src_x, int src_y, int src_width, int src_height)
 	{ // to-do: this, and incorporate alpha
-		image.render(this, gl, alpha, x, y);
+		image.render(this, gl, mainImageShader, camera, x, y);
 	}
 	
 	public void setAlpha(float newAlpha)
@@ -140,13 +141,7 @@ public class Graphics
 		camera.setToOrtho(true, w, h);
 		camera.update();
 		
-		
 		batch = new SpriteBatch();
-		
-		batch.setProjectionMatrix(camera.combined);
-		
-		
-		/*
 		
 		String textShaderVertex = "attribute vec4 a_position;\n" + 
 				"attribute vec4 a_color;\n" + 
@@ -165,7 +160,9 @@ public class Graphics
 				"    gl_Position = u_projTrans * (a_position * mat4(scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, scaleAmount, 0.0f,  0.0f, 0.0f, 0.0f, scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f));\n" + 
 				"}" ;
 		
-		String textShaderFragment = "    precision mediump float;\n" + 
+		String textShaderFragment = "#ifdef GL_ES\n" + 
+				"    precision mediump float;\n" + 
+				"#endif\n" + 
 				"\n" + 
 				"varying vec4 v_color;\n" + 
 				"varying vec2 v_texCoords;\n" + 
@@ -188,14 +185,13 @@ public class Graphics
 		
 		//batch.setProjectionMatrix(new Matrix4(new float[] { scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, scaleAmount, 0.0f,0.0f, 0.0f, 0.0f, scaleAmount, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f}));
 		batch.setShader(textShader);
-		*/
 		
 		gl = Gdx.gl20;
 		
 		gl.glEnable(GL20.GL_TEXTURE_2D);
 		gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glEnable(GL20.GL_BLEND);
-		/*
+		
 		String vertexShader = "attribute vec4 a_position;    \n" + 
 				"attribute vec4 a_color;\n" +
 				"attribute vec4 a_color2;\n" +
@@ -234,7 +230,9 @@ public class Graphics
 				"	for (int i = 0; i < 10; i++) vertex_to_light_vectors[i] = lightPositions[i] - vertex_in_modelview_space.xyz;" +
 				
                 "}                            \n" ;
-		String fragmentShader = "precision mediump float;\n" + 
+		String fragmentShader = "#ifdef GL_ES\n" +
+                  "precision mediump float;\n" + 
+                  "#endif\n" + 
                   "varying vec4 v_color;\n" + 
                   "varying vec2 v_texCoords;\n" + 
                   "uniform sampler2D u_texture;\n" + 
@@ -278,10 +276,9 @@ public class Graphics
 		 if (mainImageShader.isCompiled() == false)
 		 {
 	         Gdx.app.log("ShaderError in mainImageShader:", mainImageShader.getLog());
+	         System.exit(0);
 	     }
 		 
-		 ConvolveOp.Init(); // initialize ConvolveOp shaders
-		 */
 			 
 			 
 	}
@@ -299,7 +296,7 @@ public class Graphics
 			return;
 		}
 		
-		currentFont.render(batch, textToDraw, x, Globals.SCREEN_HEIGHT - y, r0to255, g0to255, b0to255);
+		currentFont.render(batch, textToDraw, x, Globals.game.SCREEN_HEIGHT - y, r0to255, g0to255, b0to255);
 		
 		gl.glEnable(GL20.GL_TEXTURE_2D);
 		gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

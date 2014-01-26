@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Light
 {
-	enum LightType { LIGHT_DIFFUSE, LIGHT_SPECULAR };
+	public enum LightType { LIGHT_DIFFUSE, LIGHT_SPECULAR };
 	
 	private Graphics g;
 	private LightType type = LightType.LIGHT_DIFFUSE;
@@ -15,7 +15,7 @@ public class Light
 	private float innerRadius, outerRadius;
 	
 	
-	Light(Graphics g, int index, LightType type, float x, float y, float r0to255, float g0to255, float b0to255, float innerRadius, float outerRadius)
+	public Light(Graphics g, int index, LightType type, float x, float y, float r0to255, float g0to255, float b0to255, float innerRadius, float outerRadius)
 	{ // should not be called directly!  use Graphics.createDiffuseLight() or Graphics.createSpecularLight() instead.
 		this.g = g;
 		this.type = type;

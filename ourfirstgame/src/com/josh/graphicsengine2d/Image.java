@@ -51,17 +51,13 @@ public class Image
 		this.texture = new Texture((int)width, (int)height, Pixmap.Format.RGBA4444);
 	}
 	
-	public void render(Graphics g, GL20 gl, float alpha, float x, float y)
+	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y)
 	{
-		render(g, gl, alpha, x, y, 1.0f, 1.0f);
+		render(g, gl, shader, camera, x, y, 1.0f, 1.0f);
 	}
 	
-	public void render(Graphics g, GL20 gl, float alpha, float x, float y, float scaleX, float scaleY)
+	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY)
 	{
-		Globals.game.g.batch.setColor(1.0f, 1.0f, 1.0f, alpha);
-		Globals.game.g.batch.draw(texture, x, y, texture.getWidth() * scaleX, texture.getHeight() * scaleY, 0, 0, texture.getWidth(), texture.getHeight(), false, true);
-		
-		/*
 		gl.glActiveTexture(GL20.GL_TEXTURE0);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
@@ -89,7 +85,6 @@ public class Image
 		gl.glActiveTexture(GL20.GL_TEXTURE0);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
-		*/
 	}
 	
 	
