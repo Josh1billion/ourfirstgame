@@ -51,12 +51,12 @@ public class Image
 		this.texture = new Texture((int)width, (int)height, Pixmap.Format.RGBA4444);
 	}
 	
-	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y)
+	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float alpha)
 	{
-		render(g, gl, shader, camera, x, y, 1.0f, 1.0f);
+		render(g, gl, shader, camera, x, y, 1.0f, 1.0f, alpha);
 	}
 	
-	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY)
+	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY, float alpha)
 	{
 		gl.glActiveTexture(GL20.GL_TEXTURE0);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
@@ -76,6 +76,7 @@ public class Image
 		g.uploadFadeLevelToShader(shader); // prepare fading
 		shader.setUniformf("scaleX", scaleX);
 		shader.setUniformf("scaleY", scaleY);
+		shader.setUniformf("alpha", alpha);
 		shader.setUniformMatrix("u_transformation", quadTranslation );
 		shader.setUniformMatrix("u_worldView", camera.combined );
 		quad.render(shader, GL20.GL_TRIANGLES);

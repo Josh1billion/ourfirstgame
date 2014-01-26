@@ -82,21 +82,21 @@ public class Graphics
 		
 	}
 	
-	public void drawImage(Image image, float x, float y, float scaleX, float scaleY)
+	public void drawImage(Image image, float x, float y, float scaleX, float scaleY, float alpha)
 	{ // to-do: incorporate alpha
-		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY);
+		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
 	}
 	
-	public void drawImage(Image image, float x, float y)
+	public void drawImage(Image image, float x, float y, float alpha)
 	{ // to-do: incorporate alpha
-		drawImage(image, x, y, 1.0f, 1.0f);
+		drawImage(image, x, y, 1.0f, 1.0f, alpha);
 	}
 	
 	
 	
-	public void drawImage(Image image, float x, float y, int src_x, int src_y, int src_width, int src_height)
+	public void drawImage(Image image, float x, float y, int src_x, int src_y, int src_width, int src_height, float alpha)
 	{ // to-do: this, and incorporate alpha
-		image.render(this, gl, mainImageShader, camera, x, y);
+		image.render(this, gl, mainImageShader, camera, x, y, alpha);
 	}
 	
 	public void setAlpha(float newAlpha)
@@ -211,6 +211,7 @@ public class Graphics
                 "varying vec2 v_texCoords;" + 
                 "varying vec3 normal; \n" + 
                 "varying vec3 vertex_to_light_vectors[10]; \n" + 
+                "uniform float alpha;\n" +
                 
                 
                 "void main()                  \n" + 
@@ -242,6 +243,7 @@ public class Graphics
                   "uniform float lightInnerRadiuses[10];\n" +
                   "uniform float lightOuterRadiuses[10];\n" +
                   "uniform float fadeLevel;\n" +
+                  "uniform float alpha;\n" +
                   
                   "varying vec3 normal; \n" + 
                   "varying vec3 vertex_to_light_vectors[10]; \n" + 
@@ -269,7 +271,7 @@ public class Graphics
 					"	   }\n" +
 					"	combinedLightColor = vec4(min(1.0f, combinedLightColor.x), min(1.0f, combinedLightColor.y), min(1.0f, combinedLightColor.z), 0.0f); \n" +
 
-                  "  gl_FragColor = (vec4(ambientLight, 1.0f) + combinedLightColor) * texture2D(u_texture, v_texCoords);\n" +
+                  "  gl_FragColor = (vec4(ambientLight, alpha) + combinedLightColor) * texture2D(u_texture, v_texCoords);\n" +
                   "}";
 		
 		 mainImageShader = new ShaderProgram(vertexShader, fragmentShader);

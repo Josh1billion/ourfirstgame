@@ -30,6 +30,8 @@ public class OurFirstGame implements ApplicationListener
 		
 		Globals.SCREEN_WIDTH = (int)w;
 		Globals.SCREEN_HEIGHT = (int)h;
+        
+        Input.init();
 	}
 
 	@Override
@@ -40,15 +42,7 @@ public class OurFirstGame implements ApplicationListener
 	
 	public void tick(float delta)
 	{
-		// poll the mouse/touchscreen
-		if (!Gdx.input.isTouched())
-			Input.mouseClick = 0;
-		else if (Input.mouseClick > 0)
-			Input.mouseClick = 2;
-		else
-			Input.mouseClick = 1;
-		Input.mouseX = Gdx.input.getX();
-		Input.mouseY = Gdx.input.getY();
+		Input.poll();
 		
 		// tick the game
 		Globals.game.tick(delta);

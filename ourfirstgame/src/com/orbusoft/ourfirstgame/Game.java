@@ -3,6 +3,8 @@ package com.orbusoft.ourfirstgame;
 import com.josh.graphicsengine2d.*;
 import com.josh.graphicsengine2d.Light.LightType;
 
+import com.badlogic.gdx.Input.Keys;
+
 public class Game
 {
 	public Graphics g;
@@ -11,6 +13,7 @@ public class Game
     public static final int		SCREEN_HEIGHT = 720; // former resolution: 512x416
     
     float x, y;
+    float alpha;
     
     Image background, player;
 	
@@ -33,17 +36,42 @@ public class Game
 
         background = new Image("assets/background.jpg");
         player = new Image("assets/test.jpg");
+        alpha = 1.0f;
 	}
 	
 	public void tick(float delta)
 	{
-		x += 30 * delta;
-		y += 20 * delta;
+		float speed = 300.0f;
+		
+		// movement
+		if (Input.keys[Keys.LEFT] > 0)
+			x -= speed * delta;
+		if (Input.keys[Keys.RIGHT] > 0)
+			x += speed * delta;
+		if (Input.keys[Keys.UP] > 0)
+			y -= speed * delta;
+		if (Input.keys[Keys.DOWN] > 0)
+			y += speed * delta;
+		
+		// adjust transparency with A and Z keys
+		if (Input.keys[Keys.A] > 0)
+		{
+			alpha += 1.0f * delta;
+			if (alpha > 1.0f)
+				alpha = 1.0f;
+		}
+		
+		if (Input.keys[Keys.Z] > 0)
+		{
+			alpha -= 1.0f * delta;
+			if (alpha < 0.0f)
+				alpha = 0.0f;
+		}
 	}
 	
 	public void draw()
 	{
-		g.drawImage(background, 0, 0);
-		g.drawImage(player, x, y);
+		g.drawImage(background, 0, 0, 1.0f);
+		g.drawImage(player, x, y, alpha);
 	}
 }
