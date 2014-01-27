@@ -9,13 +9,18 @@ public class Game
 {
 	public Graphics g;
     
-    public static final int		SCREEN_WIDTH = 1280;
-    public static final int		SCREEN_HEIGHT = 720; // former resolution: 512x416
+    public static final int		SCREEN_WIDTH = 800;
+    public static final int		SCREEN_HEIGHT = 600; // former resolution: 512x416
     
-    float x, y;
-    float alpha;
+    Player player;
+    Image background;
     
-    Image background, player;
+    float screenX, screenY; // camera location
+    
+    float zoom = 0.05f;
+    
+    public float getScreenX() { return screenX; }
+    public float getScreenY() { return screenY; }
 	
 	public void init()
 	{
@@ -35,46 +40,28 @@ public class Game
 		}
 
         background = new Image("assets/background.jpg");
-        player = new Image("assets/test.png");
-        alpha = 1.0f;
+        player = new Player();
 	}
 	
 	public void tick(float delta)
 	{
-		float speed = 300.0f;
+		zoom += delta * 0.1f;
+		if (zoom > 1.0f)
+			zoom = 1.0f;
+		g.setZoom(zoom);
 		
-		// movement
-		if (Input.keys[Keys.LEFT] > 0)
-			x -= speed * delta;
-		if (Input.keys[Keys.RIGHT] > 0)
-			x += speed * delta;
-		if (Input.keys[Keys.UP] > 0)
-			y -= speed * delta;
-		if (Input.keys[Keys.DOWN] > 0)
-			y += speed * delta;
-		
-		// adjust transparency with A and Z keys
-		if (Input.keys[Keys.A] > 0)
-		{
-			alpha += 1.0f * delta;
-			if (alpha > 1.0f)
-				alpha = 1.0f;
-		}
-		
-		if (Input.keys[Keys.Z] > 0)
-		{
-			alpha -= 1.0f * delta;
-			if (alpha < 0.0f)
-				alpha = 0.0f;
-		}
-		
-		g.setZoom(alpha);
-		
+		player.tick(delta);
+
+		screenX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
+		screenY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 	}
 	
 	public void draw()
 	{
-		g.drawImage(background, 0, 0, 1.0f);
-		g.drawImage(player, x - 500, y - 500, alpha, 1.0f, 1.0f);
+		for (int x = -10; x < 11; x++)
+			for (int y = -10; y < 11; y++)
+				g.drawImage(background, x * background.getWidth() - screenX, y * background.getHeight() - screenY, 1.0f);
+		player.draw(g, screenX, screenY);
+
 	}
 }

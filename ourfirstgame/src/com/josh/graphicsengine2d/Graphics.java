@@ -95,17 +95,17 @@ public class Graphics
 		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
 	}
 	
-	public void uploadLightsToShader(ShaderProgram shader)
+	public void uploadLightsToShader(ShaderProgram shader, float screenX, float screenY)
 	{ // called internally by Image.render().  no need to call it manually.
 		shader.setUniformf("ambientLight", ambientLight);
 		
 		for (int i = 0; i < 10; i++)
 			if (diffuseLights[i] != null)
-				diffuseLights[i].activateOnShader(shader);
+				diffuseLights[i].activateOnShader(shader, screenX, screenY);
 		
 		for (int i = 0; i < 10; i++)
 			if (specularLights[i] != null)
-				specularLights[i].activateOnShader(shader);
+				specularLights[i].activateOnShader(shader, screenX, screenY);
 	}
 	
 	public void uploadFadeLevelToShader(ShaderProgram shader)

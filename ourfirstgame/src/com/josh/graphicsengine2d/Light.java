@@ -29,9 +29,9 @@ public class Light
 		this.index = index;
 	}
 	
-	public void activateOnShader(ShaderProgram shader)
+	public void activateOnShader(ShaderProgram shader, float screenX, float screenY)
 	{ // called internally by Graphics.  shouldn't be called elsewhere in the game code, so just ignore this method...
-		shader.setUniformf("lightPositions[" + index + "]", new Vector3(x, y, 0.0f));
+		shader.setUniformf("lightPositions[" + index + "]", new Vector3(x - screenX, y - screenY, 0.0f));
 		shader.setUniformf("lightColors[" + index + "]", new Vector3(red, green, blue));
 		shader.setUniformf("lightInnerRadiuses[" + index + "]", innerRadius);
 		shader.setUniformf("lightOuterRadiuses[" + index + "]", outerRadius);		

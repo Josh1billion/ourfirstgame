@@ -73,7 +73,7 @@ public class Image
 		gl.glUniform1i(gl.glGetUniformLocation(0, "u_texture"), 0);
 		shader.begin();
 	//	shader.setAttributef("a_color2", 1, 1, 1, 1.0f); // color adjustment (for fading/tinting, etc.).  r,g,b,1.0f
-		g.uploadLightsToShader(shader); // prepare lights
+		g.uploadLightsToShader(shader, Globals.game.getScreenX(), Globals.game.getScreenY()); // prepare lights
 		g.uploadFadeLevelToShader(shader); // prepare fading
 		shader.setUniformf("scaleX", scaleX);
 		shader.setUniformf("scaleY", scaleY);
