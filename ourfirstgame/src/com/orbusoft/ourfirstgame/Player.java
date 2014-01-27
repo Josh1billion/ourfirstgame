@@ -34,9 +34,9 @@ public class Player
 			y += speed * delta;
 	}
 	
-	public void draw(Graphics g, float screenX, float screenY)
+	public void draw(Graphics g, float scrollX, float scrollY)
 	{
-		g.drawImage(images[0], x - screenX, y - screenY, 1.0f);
+		g.drawImage(images[0], x - scrollX, y - scrollY, 1.0f);
 	}
 
 	public float getX() { return x; }

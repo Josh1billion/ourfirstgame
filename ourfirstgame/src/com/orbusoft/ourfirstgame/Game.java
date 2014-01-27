@@ -15,12 +15,12 @@ public class Game
     Player player;
     Image background;
     
-    float screenX, screenY; // camera location
+    float scrollX, scrollY; // camera location
     
     float zoom = 0.05f;
     
-    public float getScreenX() { return screenX; }
-    public float getScreenY() { return screenY; }
+    public float getScrollX() { return scrollX; }
+    public float getScrollY() { return scrollY; }
 	
 	public void init()
 	{
@@ -52,16 +52,16 @@ public class Game
 		
 		player.tick(delta);
 
-		screenX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
-		screenY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
+		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
+		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 	}
 	
 	public void draw()
 	{
 		for (int x = -10; x < 11; x++)
 			for (int y = -10; y < 11; y++)
-				g.drawImage(background, x * background.getWidth() - screenX, y * background.getHeight() - screenY, 1.0f);
-		player.draw(g, screenX, screenY);
+				g.drawImage(background, x * background.getWidth() - scrollX, y * background.getHeight() - scrollY, 1.0f);
+		player.draw(g, scrollX, scrollY);
 
 	}
 }
