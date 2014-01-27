@@ -21,12 +21,12 @@ public class Game
 	{
 		g = new Graphics();
 		
-        g.setAmbientLight(0, 0, 0);
+        g.setAmbientLight(50, 50, 170);
 
         try
         {
 			g.createDiffuseLight(30, 30, 255, 255, 255, 100, 500); // create a white (RGB: 255, 255, 255) diffuse light at point 30, 30 with an inner radius of 100 and outer radius of 500.
-			g.createDiffuseLight(700, 400, 255, 0, 0, 100, 100); // create a red (RGB: 255, 0, 0) diffuse light at point 700, 400 with an inner radius of 100 and outer radius of 100.
+			g.createDiffuseLight(700, 400, 255, 0, 0, 10, 50); // create a red (RGB: 255, 0, 0) diffuse light at point 700, 400 with an inner radius of 100 and outer radius of 100.
 			// note: the inner radius is the radius that is always 100% lit, and the outer radius is the radius that is gradually dimmed.  play around with the values and see...
 		}
         catch (Exception e)
@@ -35,7 +35,7 @@ public class Game
 		}
 
         background = new Image("assets/background.jpg");
-        player = new Image("assets/test.jpg");
+        player = new Image("assets/test.png");
         alpha = 1.0f;
 	}
 	
@@ -67,11 +67,14 @@ public class Game
 			if (alpha < 0.0f)
 				alpha = 0.0f;
 		}
+		
+		g.setZoom(alpha);
+		
 	}
 	
 	public void draw()
 	{
 		g.drawImage(background, 0, 0, 1.0f);
-		g.drawImage(player, x, y, alpha);
+		g.drawImage(player, x - 500, y - 500, alpha, 1.0f, 1.0f);
 	}
 }

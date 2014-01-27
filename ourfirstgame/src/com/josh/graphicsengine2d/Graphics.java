@@ -21,8 +21,6 @@ public class Graphics
 	Light[] specularLights = new Light[10];
 	Vector3 ambientLight = new Vector3(0.0f, 0.0f, 0.0f);
 	
-	private float alpha = 1.0f;
-	
 	private float fadeLevel = 1.0f;
 	
 	/*
@@ -82,35 +80,19 @@ public class Graphics
 		
 	}
 	
-	public void drawImage(Image image, float x, float y, float scaleX, float scaleY, float alpha)
-	{ // to-do: incorporate alpha
-		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
+	public void drawImage(Image image, float x, float y)
+	{
+		drawImage(image, x, y);
 	}
 	
 	public void drawImage(Image image, float x, float y, float alpha)
-	{ // to-do: incorporate alpha
+	{
 		drawImage(image, x, y, 1.0f, 1.0f, alpha);
 	}
 	
-	
-	
-	public void drawImage(Image image, float x, float y, int src_x, int src_y, int src_width, int src_height, float alpha)
-	{ // to-do: this, and incorporate alpha
-		image.render(this, gl, mainImageShader, camera, x, y, alpha);
-	}
-	
-	public void setAlpha(float newAlpha)
+	public void drawImage(Image image, float x, float y, float alpha, float scaleX, float scaleY)
 	{
-		alpha = newAlpha;
-		if (alpha > 1.0f)
-			alpha = 1.0f;
-		if (alpha < 0.0f)
-			alpha = 0.0f;
-	}
-	
-	public float getAlpha()
-	{
-		return alpha;
+		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
 	}
 	
 	public void uploadLightsToShader(ShaderProgram shader)
@@ -281,8 +263,6 @@ public class Graphics
 	         System.exit(0);
 	     }
 		 
-			 
-			 
 	}
 	
 	public void setFont(Font font)
@@ -291,10 +271,10 @@ public class Graphics
 	}
 		
 	public void drawString(String textToDraw, int x, int y, int r0to255, int g0to255, int b0to255)
-	{ // to-do: incorporate alpha
+	{ // to-do: incorporate alpha?
 		if (currentFont == null)
 		{
-			Gdx.app.debug("Error", "Error when calling drawText(): no font has been set yet (with Graphics.setFont())");
+			Gdx.app.debug("Error", "Error when calling drawString(): no font has been set yet (with Graphics.setFont())");
 			return;
 		}
 		
@@ -306,7 +286,7 @@ public class Graphics
 	}
 	
 	public void drawString(String textToDraw, int x, int y)
-	{ // to-do: incorporate alpha
+	{ // to-do: incorporate alpha?
 		if (currentFont == null)
 		{
 			Gdx.app.debug("Error", "Error when calling drawText(): no font has been set yet (with Graphics.setFont())");
@@ -320,20 +300,10 @@ public class Graphics
 		gl.glEnable(GL20.GL_BLEND);
 	}
 	
-	public void setFadeLevel(float amount)
-	{ // to-do: this
+	public void setFade(float amount)
+	{
 		if (fadeLevel < 0.0f || fadeLevel > 1.0f)
 			System.out.println("Error when calling setFadeLevel(): fade amount must be >= 0.0f and <= 1.0f");
 		fadeLevel = amount;
 	}
-	
-	public void translate(float x, float y)
-	{
-		camera.translate(x, y);
-	}
-
-	public void scale(float x, float y)
-	{ // to-do: this
-	}
-	
 }
