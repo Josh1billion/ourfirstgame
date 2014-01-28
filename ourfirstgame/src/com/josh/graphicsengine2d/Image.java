@@ -141,13 +141,9 @@ public class Image
 		}
 		else
 		{
-			int frameX = currentFrameIndex;
-			int frameY = 0;
-			while (frameX > spritesPerRow)
-			{
-				frameX -= spritesPerRow;
-				frameY++;
-			}
+			int frameX = currentFrameIndex % spritesPerRow;
+			int frameY = currentFrameIndex / spritesPerRow;
+			
 			shader.setUniformf("texOffsetX", (frameX * width) / imageWidth);
 			shader.setUniformf("texOffsetY", ((frameY+1) * height) / imageHeight);
 		}
