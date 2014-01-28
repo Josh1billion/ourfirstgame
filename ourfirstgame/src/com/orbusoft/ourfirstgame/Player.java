@@ -13,10 +13,14 @@ public class Player
 	private float width = 64.0f;
 	private float height = 64.0f;
 	
+	int frame;
+	
 	public Player()
 	{
 		image = new Image("assets/test.png", 32, 32);
 		image.setFrame(0);
+		
+		frame = 0;
 	}
 	
 	public void tick(float delta)
@@ -32,6 +36,9 @@ public class Player
 			y -= speed * delta;
 		if (Input.keys[Keys.DOWN] > 0)
 			y += speed * delta;
+		
+		frame++;
+		image.setFrame(frame);
 	}
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
