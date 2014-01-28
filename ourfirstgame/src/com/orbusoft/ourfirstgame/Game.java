@@ -45,8 +45,8 @@ public class Game
 	
 	public void tick(float delta)
 	{
-		zoom += delta * 0.1f;
-		if (zoom > 1.0f)
+//		zoom += delta * 0.1f;
+	//	if (zoom > 1.0f)
 			zoom = 1.0f;
 		g.setZoom(zoom);
 		

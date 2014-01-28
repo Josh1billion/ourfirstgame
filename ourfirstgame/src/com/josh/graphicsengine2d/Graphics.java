@@ -95,6 +95,11 @@ public class Graphics
 		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
 	}
 	
+	public void drawImageSpecial(Image image, float x, float y, float alpha, float scaleX, float scaleY)
+	{
+		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
+	}
+	
 	public void uploadLightsToShader(ShaderProgram shader, float screenX, float screenY)
 	{ // called internally by Image.render().  no need to call it manually.
 		shader.setUniformf("ambientLight", ambientLight);
@@ -185,6 +190,8 @@ public class Graphics
                 "uniform float lightOuterRadiuses[10];\n" +
                 "uniform float scaleX;\n" +
                 "uniform float scaleY;\n" +
+                "uniform float texOffsetX;\n" +
+                "uniform float texOffsetY;\n" +
             
                 "attribute vec2 a_texCoord0;\n" + 
                 "uniform mat4 u_worldView;\n" +  
@@ -199,6 +206,8 @@ public class Graphics
                 "void main()                  \n" + 
                 "{                            \n" + 
                 "   v_texCoords = a_texCoord0; \n" +
+                "	v_texCoords[0] += texOffsetX;\n" +
+                "	v_texCoords[1] += texOffsetY;\n" +
                 
                 "	mat4 scaleMatrix = mat4(vec4(scaleX, 0.0f, 0.0f, 0.0f), vec4(0.0f, scaleY, 0.0f, 0.0f), vec4(0.0f, 0.0f, 1.0f, 0.0f), vec4(0.0f, 0.0f, 0.0f, 1.0f));  \n" +
 

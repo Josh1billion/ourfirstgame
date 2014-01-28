@@ -5,7 +5,7 @@ import com.josh.graphicsengine2d.*;
 
 public class Player
 {
-	private Image images[];
+	private Image image;
 	
 	private float x, y;
 	private float velX, velY;
@@ -15,8 +15,8 @@ public class Player
 	
 	public Player()
 	{
-		images = new Image[1];
-		images[0] = new Image("assets/test.png");
+		image = new Image("assets/test.png", 32, 32);
+		image.setFrame(0);
 	}
 	
 	public void tick(float delta)
@@ -36,7 +36,7 @@ public class Player
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
 	{
-		g.drawImage(images[0], x - scrollX, y - scrollY, 1.0f);
+		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f);
 	}
 
 	public float getX() { return x; }

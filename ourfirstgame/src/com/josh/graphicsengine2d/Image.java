@@ -20,13 +20,27 @@ public class Image
 	
 	float width = 0.0f;
 	float height = 0.0f;
+
+	float imageWidth = 0.0f;
+	float imageHeight = 0.0f;
+
+	boolean isSpritesheet = false; // used internally.  if false, width and imageWidth will be equal, as will height and imageHeight.
+	int spriteCount = 1; // used internally.  will be 1 if isSpritesheet is false.
+	int spritesPerRow = 1; // used internally.  will be 1 if isSpritesheet is false.
+	int currentFrameIndex; // only important if this is a spritesheet.
+
 	
 	public Image(Texture texture)
 	{
+		isSpritesheet = false;
+		
 		this.texture = texture;
 		
 		width = texture.getWidth();
 		height = texture.getHeight();
+		
+		imageWidth = texture.getWidth();
+		imageHeight = texture.getHeight();
 		
 		float repeatCountX = 1.0f;
 		float repeatCountY = 1.0f;
@@ -40,9 +54,47 @@ public class Image
 		quad.setIndices(new short[] {0, 1, 2, 0, 2, 3});
 	}
 	
+	public Image(Texture texture, int frameWidth, int frameHeight)
+	{
+		this.texture = texture;
+
+		isSpritesheet = true;
+		spritesPerRow = (int)(texture.getWidth() / frameWidth);
+		spriteCount = spritesPerRow * (int)(texture.getHeight() / frameHeight);
+				
+		width = frameWidth;
+		height = frameHeight;
+		
+		imageWidth = texture.getWidth();
+		imageHeight = texture.getHeight();
+		
+		float repeatCountX = 1.0f;
+		float repeatCountY = 1.0f;
+		
+		quad = new Mesh(true, 4, 6, VertexAttribute.Position(), VertexAttribute.ColorUnpacked(), VertexAttribute.TexCoords(0));
+		quad.setVertices(new float[] 
+		{-width/2.0f, -height/2.0f, 0, 1, 1, 1, 1, 0, -repeatCountY,
+		width/2.0f, -height/2.0f, 0, 1, 1, 1, 1, repeatCountX, -repeatCountY,
+		width/2.0f, height/2.0f, 0, 1, 1, 1, 1, repeatCountX, 0,
+		-width/2.0f, height/2.0f, 0, 1, 1, 1, 1, 0, 0});
+		quad.setIndices(new short[] {0, 1, 2, 0, 2, 3});
+	}
+	
+	public Image(String filename, int frameWidth, int frameHeight)
+	{
+		this(new Texture(Gdx.files.internal(filename)), frameWidth, frameHeight);
+	}
+	
 	public Image(String filename)
 	{
 		this(new Texture(Gdx.files.internal(filename)));
+	}
+	
+	public void setFrame(int frameIndex)
+	{
+		if (!isSpritesheet)
+			return;
+		this.currentFrameIndex = frameIndex;
 	}
 	
 	public Image(float width, float height)
@@ -52,13 +104,18 @@ public class Image
 		this.texture = new Texture((int)width, (int)height, Pixmap.Format.RGBA4444);
 	}
 	
-	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float alpha)
-	{
-		render(g, gl, shader, camera, x, y, 1.0f, 1.0f, alpha);
-	}
-	
 	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY, float alpha)
 	{
+		float repeatCountX = width / imageWidth;
+		float repeatCountY = height / imageHeight;
+		
+		quad.setVertices(new float[] 
+		{-width/2.0f, -height/2.0f, 0, 1, 1, 1, 1, 0, -repeatCountY,
+		width/2.0f, -height/2.0f, 0, 1, 1, 1, 1, repeatCountX, -repeatCountY,
+		width/2.0f, height/2.0f, 0, 1, 1, 1, 1, repeatCountX, 0,
+		-width/2.0f, height/2.0f, 0, 1, 1, 1, 1, 0, 0});
+		quad.setIndices(new short[] {0, 1, 2, 0, 2, 3});
+		
 		gl.glActiveTexture(GL20.GL_TEXTURE0);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
@@ -78,6 +135,18 @@ public class Image
 		shader.setUniformf("scaleX", scaleX);
 		shader.setUniformf("scaleY", scaleY);
 		shader.setUniformf("alpha", alpha);
+		if (!isSpritesheet)
+		{
+			shader.setUniformf("texOffsetX", 0.0f);
+			shader.setUniformf("texOffsetY", 0.0f);
+		}
+		else
+		{
+			int frameX = 1;
+			int frameY = 2;
+			shader.setUniformf("texOffsetX", (frameX * width) / imageWidth);
+			shader.setUniformf("texOffsetY", ((frameY+1) * height) / imageHeight);
+		}
 		shader.setUniformMatrix("u_transformation", quadTranslation );
 		shader.setUniformMatrix("u_worldView", camera.combined );
 		quad.render(shader, GL20.GL_TRIANGLES);
