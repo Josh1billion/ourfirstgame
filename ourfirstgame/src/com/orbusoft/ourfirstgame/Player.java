@@ -15,15 +15,22 @@ public class Player
 	
 	int frame;
 	
+	int frame;
+	
 	public Player()
 	{
 		image = new Image("assets/test.png", 32, 32);
 		image.setFrame(0);
 <<<<<<< HEAD
+<<<<<<< HEAD
 		y = -500;
 		x = 0;
 		velX = 0;
 		velY = 0;
+=======
+		
+		frame = 0;
+>>>>>>> 9970be2a8162fb01c1516647e01a3c49ca4005f6
 =======
 		
 		frame = 0;
@@ -191,6 +198,9 @@ public class Player
 		
 		frame++;
 		image.setFrame(frame);
+<<<<<<< HEAD
+>>>>>>> 9970be2a8162fb01c1516647e01a3c49ca4005f6
+=======
 >>>>>>> 9970be2a8162fb01c1516647e01a3c49ca4005f6
 	}
 	
