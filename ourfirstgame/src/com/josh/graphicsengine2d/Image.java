@@ -23,7 +23,6 @@ public class Image
 
 	float imageWidth = 0.0f;
 	float imageHeight = 0.0f;
-
 	boolean isSpritesheet = false; // used internally.  if false, width and imageWidth will be equal, as will height and imageHeight.
 	int spriteCount = 1; // used internally.  will be 1 if isSpritesheet is false.
 	int spritesPerRow = 1; // used internally.  will be 1 if isSpritesheet is false.
@@ -142,8 +141,9 @@ public class Image
 		}
 		else
 		{
-			int frameX = 1;
-			int frameY = 2;
+			int frameX = currentFrameIndex % spritesPerRow;
+			int frameY = currentFrameIndex / spritesPerRow;
+			
 			shader.setUniformf("texOffsetX", (frameX * width) / imageWidth);
 			shader.setUniformf("texOffsetY", ((frameY+1) * height) / imageHeight);
 		}

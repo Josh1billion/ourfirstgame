@@ -13,18 +13,26 @@ public class Player
 	
 	
 	
+	int frame;
+	
 	public Player()
 	{
 		image = new Image("assets/test.png", 32, 32);
 		image.setFrame(0);
+<<<<<<< HEAD
 		y = -500;
 		x = 0;
 		velX = 0;
 		velY = 0;
+=======
+		
+		frame = 0;
+>>>>>>> 9970be2a8162fb01c1516647e01a3c49ca4005f6
 	}
 	
 	public void tick(float delta)
 	{
+<<<<<<< HEAD
 		
 		
 		
@@ -168,6 +176,22 @@ public class Player
 		
 		x += velX;
 		y += velY;
+=======
+		float speed = 100.0f;
+		
+		// movement
+		if (Input.keys[Keys.LEFT] > 0)
+			x -= speed * delta;
+		if (Input.keys[Keys.RIGHT] > 0)
+			x += speed * delta;
+		if (Input.keys[Keys.UP] > 0)
+			y -= speed * delta;
+		if (Input.keys[Keys.DOWN] > 0)
+			y += speed * delta;
+		
+		frame++;
+		image.setFrame(frame);
+>>>>>>> 9970be2a8162fb01c1516647e01a3c49ca4005f6
 	}
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
