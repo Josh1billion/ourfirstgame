@@ -13,7 +13,7 @@ public class Player
 	
 	
 	
-	int frame;
+	int frame = 0;
 	
 
 	
@@ -25,8 +25,6 @@ public class Player
 		x = 0;
 		velX = 0;
 		velY = 0;
-		
-		frame = 0;
 	}
 	
 	public void tick(float delta)
@@ -175,17 +173,6 @@ public class Player
 		x += velX;
 		y += velY;
 		
-		float speed = 100.0f;
-		
-		// movement
-		if (Input.keys[Keys.LEFT] > 0)
-			x -= speed * delta;
-		if (Input.keys[Keys.RIGHT] > 0)
-			x += speed * delta;
-		if (Input.keys[Keys.UP] > 0)
-			y -= speed * delta;
-		if (Input.keys[Keys.DOWN] > 0)
-			y += speed * delta;
 		
 		frame++;
 		image.setFrame(frame);
