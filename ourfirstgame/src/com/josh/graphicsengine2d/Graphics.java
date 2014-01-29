@@ -17,8 +17,8 @@ public class Graphics
 	private OrthographicCamera camera = null;
 	private ShaderProgram mainImageShader = null;
 
-	Light[] diffuseLights = new Light[10];
-	Light[] specularLights = new Light[10];
+	public Light[] diffuseLights = new Light[10];
+	public Light[] specularLights = new Light[10];
 	Vector3 ambientLight = new Vector3(0.0f, 0.0f, 0.0f);
 	
 	private float fadeLevel = 1.0f;

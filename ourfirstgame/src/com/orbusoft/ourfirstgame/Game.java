@@ -1,7 +1,6 @@
 package com.orbusoft.ourfirstgame;
 
 import com.josh.graphicsengine2d.*;
-import com.josh.graphicsengine2d.Light.LightType;
 
 import com.badlogic.gdx.Input.Keys;
 
@@ -14,6 +13,7 @@ public class Game
     
     Player player;
     Image background;
+    Light torch;
     
     float scrollX, scrollY; // camera location
     
@@ -26,14 +26,17 @@ public class Game
 	{
 		g = new Graphics();
 		
-        g.setAmbientLight(50, 50, 170);
+        g.setAmbientLight(150, 150, 150);
 
         try
         {
-			g.createDiffuseLight(30, 30, 255, 255, 255, 100, 500); // create a white (RGB: 255, 255, 255) diffuse light at point 30, 30 with an inner radius of 100 and outer radius of 500.
-			g.createDiffuseLight(700, 400, 255, 0, 0, 10, 50); // create a red (RGB: 255, 0, 0) diffuse light at point 700, 400 with an inner radius of 100 and outer radius of 100.
+			//g.createDiffuseLight(30, 30, 255, 255, 255, 100, 500);
+			// create a white (RGB: 255, 255, 255) diffuse light at point 30, 30 with an inner radius of 100 and outer radius of 500.
 			// note: the inner radius is the radius that is always 100% lit, and the outer radius is the radius that is gradually dimmed.  play around with the values and see...
-		}
+			
+			//create the player's torch:
+			torch = g.createDiffuseLight(0,-500, 255, 147, 59, 10, 250);
+        }
         catch (Exception e)
         {
 			e.printStackTrace();
@@ -45,6 +48,14 @@ public class Game
 	
 	public void tick(float delta)
 	{
+		//make the player's torch follow player:
+		torch.setXY(player.getX() + player.getVelX() + (player.getWidth()/2), player.getY() + player.getVelY() + (player.getHeight()/2));
+		
+		if(Input.keys[Keys.S] > 0){
+			torch.increaseColors(-150*delta,-150*delta,-150*delta);
+		}
+	
+		
 //		zoom += delta * 0.1f;
 	//	if (zoom > 1.0f)
 			zoom = 1.0f;
@@ -53,7 +64,8 @@ public class Game
 		player.tick(delta);
 
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
-		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
+		scrollY = -925;
+		//scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 	}
 	
 	public void draw()
