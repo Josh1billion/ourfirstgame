@@ -9,38 +9,42 @@ public class Light
 	
 	private Graphics g;
 	private LightType type = LightType.LIGHT_DIFFUSE;
-	private int index;
-	private float x, y;
-	private float red, green, blue;
-	private float innerRadius, outerRadius;
+	public int index;
+	protected float x, y;
+	protected float red, green, blue;
+	protected float innerRadius, outerRadius;
 	
 	
-	public void setXY(float newX,float newY){
-		//allows you to move a light around.
-		this.x = newX;
-		this.y = newY;
+	public void setPosition(float x, float y)
+	{
+		// allows you to move a light around.
+		this.x = x;
+		this.y = y;
 	}
 	
-	public void setColors(float newRed, float newGreen, float newBlue){
-		//sets the light's (r,g,b) to a new amount.
-		this.red = newRed / 255.0f;
-		this.green = newGreen / 255.0f;
-		this.blue = newBlue / 255.0f;
+	public void setColor(float red0to255, float green0to255, float blue0to255)
+	{
+		this.red = red0to255 / 255.0f;
+		this.green = green0to255 / 255.0f;
+		this.blue = blue0to255 / 255.0f;
 	}
 	
-	public void increaseColors(float r,float g, float b){ 
+	public void increaseColors(float red0to255, float green0to255, float blue0to255)
+	{ 
 		//Adds (r,g,b) to the light's current (r,g,b) values.
-		this.red += r / 255.0f;
-		this.green += g / 255.0f;
-		this.blue += b / 255.0f;
+		this.red += red0to255 / 255.0f;
+		this.green += green0to255 / 255.0f;
+		this.blue += blue0to255 / 255.0f;
 	}
 	
-	public void setRadius(float inner, float outer){
+	public void setRadius(float inner, float outer)
+	{
 		this.innerRadius = inner;
 		this.outerRadius = outer;
 	}
 	
-	public void increaseRadius(float inner, float outer){
+	public void increaseRadius(float inner, float outer)
+	{
 		this.innerRadius += inner;
 		this.outerRadius += outer;
 	}
@@ -70,5 +74,9 @@ public class Light
 	public void remove() throws Exception
 	{
 		g.removeLight(this);
+	}
+	
+	public void tick(float delta)
+	{ // does nothing here, but lights that extend it can make good use of it
 	}
 }

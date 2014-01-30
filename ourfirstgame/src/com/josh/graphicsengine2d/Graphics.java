@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.josh.graphicsengine2d.Globals;
+import com.josh.graphicsengine2d.Light.LightType;
 
 public class Graphics
 {
@@ -59,6 +60,36 @@ public class Graphics
 		{
 			diffuseLights[index] = new Light(this, index, Light.LightType.LIGHT_DIFFUSE, x, y, r0to255, g0to255, b0to255, innerRadius, outerRadius);
 			return diffuseLights[index];
+		}
+	}
+	
+	public void addLight(Light light, Light.LightType type) throws Exception
+	{ // for lights that are manually created.  useful for custom lights that extend the Light class and must be created manually because of that.
+		if (type == LightType.LIGHT_DIFFUSE)
+		{
+			int index = -1;
+			for (int i = 0; i < 10; i++)
+				if (diffuseLights[i] == null)
+				{
+					index = i;
+					break;
+				}
+			if (index != -1)
+				diffuseLights[index] = light;
+			light.index = index;
+		}
+		else // specular light
+		{
+			int index = -1;
+			for (int i = 0; i < 10; i++)
+				if (specularLights[i] == null)
+				{
+					index = i;
+					break;
+				}
+			if (index != -1)
+				specularLights[index] = light;
+			light.index = index;
 		}
 	}
 	
@@ -314,5 +345,17 @@ public class Graphics
 		if (fadeLevel < 0.0f || fadeLevel > 1.0f)
 			System.out.println("Error when calling setFadeLevel(): fade amount must be >= 0.0f and <= 1.0f");
 		fadeLevel = amount;
+	}
+	
+	// ticks lights and other time-sensitive elements.  should be called from Game.tick(), once per frame
+	public void tick(float delta)
+	{
+		for (int i = 0; i < diffuseLights.length; i++)
+			if (diffuseLights[i] != null)
+				diffuseLights[i].tick(delta);
+		
+		for (int i = 0; i < specularLights.length; i++)
+			if (specularLights[i] != null)
+				specularLights[i].tick(delta);
 	}
 }

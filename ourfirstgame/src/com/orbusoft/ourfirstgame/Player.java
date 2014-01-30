@@ -8,30 +8,24 @@ public class Player
 	private Image image;
 	private float x, y;
 	private float velX, velY;
-	private float width = 32.0f;
-	private float height = 32.0f;
-	
-	
+	private float width = 128.0f;
+	private float height = 192.0f;
 	
 	int frame = 0;
 	
-
-	
 	public Player()
 	{
-		image = new Image("assets/test.png", 32, 32);
+		image = new Image("assets/player.png", 128, 192);
 		image.setFrame(0);
 		y = -500;
 		x = 0;
 		velX = 0;
 		velY = 0;
+		frame = 0;
 	}
 	
 	public void tick(float delta)
-	{
-		
-		
-		
+	{	
 		////////////////////////////START PHYSICS 01!\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 		
 		/*			
@@ -99,10 +93,11 @@ public class Player
 		float maxRunSpeed = 300;
 		velY += gravity*delta;
 		
-		if(Input.keys[Keys.W] == 1){
+		if (Input.keys[Keys.W] == 1)
 			velY -= jump;
-		}
-		if(Input.keys[Keys.A] > 0){
+		
+		if (Input.keys[Keys.A] > 0)
+		{
 			//if(velX >= maxRunSpeed * delta * -1){
 			//TODO: Fix the above line of code such that the player doesn't keep running at above-max speed
 			//		after getting an FPS drop for one frame.
@@ -114,46 +109,43 @@ public class Player
 				}
 			//}
 		}
-		else if(Input.keys[Keys.D] > 0){
+		else if (Input.keys[Keys.D] > 0)
+		{
 			//if(velX <= maxRunSpeed*delta){	//So the player doesn't lose excess speed from slopes or whatever, 
 				//which he might want to use.
-				if(velX < maxRunSpeed*delta - acceleration*delta){
+				if(velX < maxRunSpeed*delta - acceleration*delta)
 					velX += acceleration*delta;
-				}
-				else{
+				else
 					velX = maxRunSpeed*delta;
-				}
 			//}
 		} 
-		else{	
+		else
+		{	
 			//if player isn't pressing A or D
-			if(y >= -485 - velY){
+			if (y >= -485 - velY)
+			{
 				//player is on the ground; apply friction!
-				if(velX > friction*delta){
+				if (velX > friction*delta)
 					velX -= friction*delta;
-				}
-				else if(velX < -1*friction*delta){
+				else if (velX < -1*friction*delta)
 					velX += friction*delta;
-				}
-				else{
+				else
 					velX = 0;
-				}
 			}
-			else{
+			else
+			{
 				//player is not on the ground, but in the air.
 				//do not apply friction, apply air resistance instead (which is the same as friction but a lower number)
-				if(velX > airResistance*delta){
+				if (velX > airResistance*delta)
 					velX -= airResistance*delta;
-				}
-				else if(velX < -1*airResistance*delta){
+				else if (velX < -1*airResistance*delta)
 					velX += airResistance*delta;
-				}
-				else{
+				else
 					velX = 0;
-				}
 			}
 		}
-		if(Input.keys[Keys.S] > 0){
+		if (Input.keys[Keys.S] > 0)
+		{
 			//crouch or move down ladder or whatever
 		}
 		
@@ -162,12 +154,12 @@ public class Player
 		
 		
 		
-		if(y >= -485 - velY){
+		if (y >= -485 - velY)
+		{
 			y = -485; 		//the whole world is basically a flat piece of ground.
 							//This is done to easily test the different physics settings.
-			if(velY > 0){
+			if (velY > 0)
 				velY = 0;
-			}
 		}
 		
 		x += velX;
@@ -175,7 +167,7 @@ public class Player
 		
 		
 		frame++;
-		image.setFrame(frame);
+		image.setFrame(0);
 	}
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
