@@ -47,8 +47,6 @@ public class Game
 	
 	public void tick(float delta)
 	{
-		//make the player's torch follow player:
-		torch.setPosition(player.getX() + (player.getWidth()/2), player.getY() + (player.getHeight()/2));
 		
 		if(Input.keys[Keys.S] > 0){
 			torch.increaseColors(-150*delta,-150*delta,-150*delta);
@@ -61,10 +59,11 @@ public class Game
 		g.setZoom(zoom);
 		
 		player.tick(delta);
+		//make the player's torch follow player:
+		torch.setPosition(player.getX() + (player.getWidth()/2), player.getY() + (player.getHeight()/2));
 
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
-		scrollY = -925;
-		//scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
+		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 		
 		g.tick(delta);
 	}
@@ -72,8 +71,7 @@ public class Game
 	public void draw()
 	{
 		for (int x = -10; x < 11; x++)
-			for (int y = -10; y < 11; y++)
-				g.drawImage(background, x * background.getWidth() - scrollX, y * background.getHeight() - scrollY, 1.0f);
+				g.drawImage(background, x * 1920 - scrollX, 0 - scrollY, 1.0f);
 		player.draw(g, scrollX, scrollY);
 
 	}

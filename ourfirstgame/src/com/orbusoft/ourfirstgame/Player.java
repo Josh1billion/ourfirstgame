@@ -17,7 +17,7 @@ public class Player
 	{
 		image = new Image("assets/player.png", 128, 192);
 		image.setFrame(0);
-		y = -500;
+		y = 500;
 		x = 0;
 		velX = 0;
 		velY = 0;
@@ -154,9 +154,9 @@ public class Player
 		
 		
 		
-		if (y >= -485 - velY)
+		if (y >= 500)
 		{
-			y = -485; 		//the whole world is basically a flat piece of ground.
+			y = 500; 		//the whole world is basically a flat piece of ground.
 							//This is done to easily test the different physics settings.
 			if (velY > 0)
 				velY = 0;
@@ -168,6 +168,8 @@ public class Player
 		
 		frame++;
 		image.setFrame(0);
+		if (velX != 0)
+			image.setFrame(8);
 	}
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
