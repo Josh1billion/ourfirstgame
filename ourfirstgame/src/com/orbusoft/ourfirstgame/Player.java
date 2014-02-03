@@ -85,12 +85,12 @@ public class Player
 		//mechanical or clunky.
 		
 		
-		float gravity = 45;		//TODO: move these variable declarations out of the tick function
-		float jump = 13;		// when we've decided which numbers we're using.
-		float friction = 30;
+		float gravity = 48;		//TODO: move these variable declarations out of the tick function
+		float jump = 22;		// when we've decided which numbers we're using.
+		float friction = 50;
 		float airResistance = 5;
-		float acceleration = 150;
-		float maxRunSpeed = 300;
+		float acceleration = 45;
+		float maxRunSpeed = 600;
 		velY += gravity*delta;
 		
 		if (Input.keys[Keys.W] == 1)
@@ -101,12 +101,10 @@ public class Player
 			//if(velX >= maxRunSpeed * delta * -1){
 			//TODO: Fix the above line of code such that the player doesn't keep running at above-max speed
 			//		after getting an FPS drop for one frame.
-				if(velX > maxRunSpeed*delta*-1 - acceleration*delta*-1){
+				if (velX > maxRunSpeed*delta*-1 - acceleration*delta*-1)
 					velX += acceleration*delta*-1;
-				}
-				else{
+				else
 					velX = maxRunSpeed*delta*-1;
-				}
 			//}
 		}
 		else if (Input.keys[Keys.D] > 0)
