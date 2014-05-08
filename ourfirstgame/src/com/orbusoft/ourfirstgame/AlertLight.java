@@ -3,6 +3,7 @@ package com.orbusoft.ourfirstgame;
 import com.josh.graphicsengine2d.Graphics;
 import com.josh.graphicsengine2d.Light;
 
+// This is great fun much excitement :D
 public class AlertLight extends Light
 {
 	private float redTimer = 0.0f;
