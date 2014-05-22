@@ -12,8 +12,9 @@ public class Game
     public static final int		SCREEN_HEIGHT = 1080; // former resolution: 512x416
     
     Player player;
+    FairyThing lampy;
     Image background;
-    Light torch;
+    Light torch, lampyGlow;
     
     float scrollX, scrollY; // camera location
     
@@ -30,11 +31,12 @@ public class Game
 
         try
         {
-			//create the player's torch
+			
 			Light alert = new AlertLight(g, 1, 4.0f, 0, 500, 150, 250);
 			g.addLight(alert, LightType.LIGHT_DIFFUSE);
-
+			//create the player's torch
 			torch = g.createDiffuseLight(0, 0, 255, 255, 255, 200, 200);
+			lampyGlow = g.createDiffuseLight(0, 0, 175, 175, 0, 60, 90);
         }
         catch (Exception e)
         {
@@ -43,6 +45,7 @@ public class Game
 
         background = new Image("assets/background.jpg");
         player = new Player();
+        lampy = new FairyThing();
 	}
 	
 	public void tick(float delta)
@@ -61,7 +64,9 @@ public class Game
 		player.tick(delta);
 		//make the player's torch follow player:
 		torch.setPosition(player.getX() + (player.getWidth()/2), player.getY() + (player.getHeight()/2));
-
+		
+		lampyGlow.setPosition(lampy.getX() + (lampy.getWidth()/2), lampy.getY() + (lampy.getHeight()/2));
+		
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
 		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 		
@@ -73,6 +78,7 @@ public class Game
 		for (int x = -10; x < 11; x++)
 				g.drawImage(background, x * 1920 - scrollX, 0 - scrollY, 1.0f);
 		player.draw(g, scrollX, scrollY);
+		lampy.draw(g, scrollX, scrollY);
 
 	}
 }
