@@ -10,7 +10,9 @@ public class FairyThing extends FlyingAlly{
 	private float height = 40.0f;
 	private float x, y;
 	private float velX, velY; 	
-	private float liveTime;
+	
+	public float liveTime;
+	
 	public FairyThing(){
 		image = new Image("assets/flything.png", 40, 40);
 		image.setFrame(0);

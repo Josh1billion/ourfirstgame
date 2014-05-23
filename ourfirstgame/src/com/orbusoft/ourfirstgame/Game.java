@@ -35,7 +35,7 @@ public class Game
 			Light alert = new AlertLight(g, 1, 4.0f, -800, 700, 150, 250);
 			g.addLight(alert, LightType.LIGHT_DIFFUSE);
 			//create the player's torch
-			lampyGlow = g.createDiffuseLight(0, 0, 255, 255, 255, 30, 300);
+			lampyGlow = g.createDiffuseLight(0, 0, 230, 230, 230, 30, 300);
         }
         catch (Exception e)
         {
@@ -64,6 +64,12 @@ public class Game
 		lampy.tick(delta);
 		//Lampy's glow follows Lampy!
 		lampyGlow.setPosition(lampy.getX() + (lampy.getWidth()/2), lampy.getY() + (lampy.getHeight()/2));
+		/*lampy's glow flickers.
+		 *red/green/blue values change independently, based on a sine function, at separate frequencies but 
+		 *with equal amplitude
+		 */
+		lampyGlow.increaseColors((float)Math.sin(lampy.liveTime*7)*3, (float)Math.sin(lampy.liveTime*3)*3, (float)Math.sin(lampy.liveTime*5)*3);
+		
 		
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
 		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
