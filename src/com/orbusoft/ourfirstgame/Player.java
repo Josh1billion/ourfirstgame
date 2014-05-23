@@ -1,14 +1,13 @@
 package com.orbusoft.ourfirstgame;
 
 import com.badlogic.gdx.Input.Keys;
-import com.josh.graphicsengine2d.*;		//TODO: move this import to the Entity.java base class, such that not every entity in the game needs to import it on their own.
-										//TODO: give the above TODO statement a more sane length, so it does not go off the side of the screen.
-public class Player //extends Creature
+import com.josh.graphicsengine2d.*;
+
+public class Player
 {
 	private Image image;
 	private float x, y;
-	private float velX, velY; 			//TODO: when base classes are less incomplete, make sure there are no duplicate variable declarations
-										// 		like "float x" existing both in Player.java and Entity.java
+	private float velX, velY;
 	private float width = 128.0f;
 	private float height = 192.0f;
 	
