@@ -19,8 +19,9 @@ public class AlertLight extends Light
 	public void tick(float delta)
 	{
 		redTimer += delta * Math.PI * speed;
-		while (redTimer > Math.PI * 2)
+		while (redTimer > Math.PI * 2){
 			redTimer -= Math.PI * 2;
+		}
 		double test = (Math.sin(redTimer) + 1.0f) * 0.5f;
 		red = (float)test;
 		blue = 0.0f;
