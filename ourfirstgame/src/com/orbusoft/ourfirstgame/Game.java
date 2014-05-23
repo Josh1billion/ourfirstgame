@@ -32,11 +32,10 @@ public class Game
         try
         {
 			
-			Light alert = new AlertLight(g, 1, 4.0f, 0, 500, 150, 250);
+			Light alert = new AlertLight(g, 1, 4.0f, -800, 700, 150, 250);
 			g.addLight(alert, LightType.LIGHT_DIFFUSE);
 			//create the player's torch
-			torch = g.createDiffuseLight(0, 0, 255, 255, 255, 200, 200);
-			lampyGlow = g.createDiffuseLight(0, 0, 0, 175, 0, 60, 90);
+			lampyGlow = g.createDiffuseLight(0, 0, 255, 255, 255, 30, 300);
         }
         catch (Exception e)
         {
@@ -52,7 +51,7 @@ public class Game
 	{
 		
 		if(Input.keys[Keys.S] > 0){
-			torch.increaseColors(-150*delta,-150*delta,-150*delta);
+			lampyGlow.increaseColors(-150*delta,-150*delta,-150*delta);
 		}
 	
 		
@@ -62,9 +61,8 @@ public class Game
 		g.setZoom(zoom);
 		
 		player.tick(delta);
-		//make the player's torch follow player:
-		torch.setPosition(player.getX() + (player.getWidth()/2), player.getY() + (player.getHeight()/2));
-		
+		lampy.tick(delta);
+		//Lampy's glow follows Lampy!
 		lampyGlow.setPosition(lampy.getX() + (lampy.getWidth()/2), lampy.getY() + (lampy.getHeight()/2));
 		
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
@@ -78,7 +76,7 @@ public class Game
 		for (int x = -10; x < 11; x++)
 				g.drawImage(background, x * 1920 - scrollX, 0 - scrollY, 1.0f);
 		player.draw(g, scrollX, scrollY);
-		//lampy.draw(g,scrollX,scrollY); 	//TODO: fix this so it works.
+		lampy.draw(g,scrollX,scrollY);
 
 	}
 }

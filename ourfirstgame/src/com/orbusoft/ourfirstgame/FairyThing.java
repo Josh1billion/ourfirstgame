@@ -10,21 +10,24 @@ public class FairyThing extends FlyingAlly{
 	private float height = 40.0f;
 	private float x, y;
 	private float velX, velY; 	
-	
+	private float liveTime;
 	public FairyThing(){
-		image = new Image("assets/flything.png", 128, 192);
+		image = new Image("assets/flything.png", 40, 40);
 		image.setFrame(0);
 		y = 500;
-		x = -50;
-		
+		x = 450;
+		liveTime = 0;
 	}
 	
 	
 	public void tick(float delta)
 	{
 		
+		
 		x += velX;
 		y += velY;
+		liveTime += delta*7;
+		y += (float)Math.sin(liveTime) * 0.8f;
 	}
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
