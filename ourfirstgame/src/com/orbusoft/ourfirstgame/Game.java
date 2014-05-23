@@ -32,7 +32,7 @@ public class Game
         try
         {
 			
-			Light alert = new AlertLight(g, 1, 4.0f, -800, 700, 150, 250);
+			Light alert = new AlertLight(g, 1, 4.0f, -1375, 700, 150, 250);
 			g.addLight(alert, LightType.LIGHT_DIFFUSE);
 			//create the player's torch
 			lampyGlow = g.createDiffuseLight(0, 0, 230, 230, 230, 30, 300);
