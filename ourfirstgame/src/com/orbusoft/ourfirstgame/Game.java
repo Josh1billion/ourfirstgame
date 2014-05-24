@@ -11,7 +11,7 @@ public class Game
     public static final int		SCREEN_WIDTH = 1920;
     public static final int		SCREEN_HEIGHT = 1080; // former resolution: 512x416
     
-    Player player;
+    private Player player;
     FairyThing lampy;
     Image background;
     Light torch, lampyGlow;
@@ -70,7 +70,6 @@ public class Game
 		 */
 		lampyGlow.increaseColors((float)Math.sin(lampy.liveTime*7)*3, (float)Math.sin(lampy.liveTime*3)*3, (float)Math.sin(lampy.liveTime*5)*3);
 		
-		
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
 		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 		
@@ -85,4 +84,8 @@ public class Game
 		lampy.draw(g,scrollX,scrollY);
 
 	}
+	
+	
+	// getters and setters
+	public Player getPlayer() { return player; }
 }

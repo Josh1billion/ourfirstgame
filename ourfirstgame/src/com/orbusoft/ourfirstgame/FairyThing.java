@@ -4,13 +4,9 @@ import com.josh.graphicsengine2d.*;
 
 //this is just a test class, used to test inheritence and what not.
 
-public class FairyThing extends FlyingAlly{
-	private Image image;
-	private float width = 40.0f;
-	private float height = 40.0f;
-	private float x, y;
-	private float velX, velY; 	
-	
+public class FairyThing extends AlliedCreature
+{
+
 	public float liveTime;
 	
 	public FairyThing(){
@@ -18,6 +14,8 @@ public class FairyThing extends FlyingAlly{
 		image.setFrame(0);
 		y = 500;
 		x = 450;
+		width = 40;
+		height = 40;
 		liveTime = 0;
 	}
 	
@@ -26,10 +24,12 @@ public class FairyThing extends FlyingAlly{
 	{
 		
 		
-		x += velX;
-		y += velY;
+		x += velX * delta;
+		y += velY * delta;
 		liveTime += delta*7;
 		y += (float)Math.sin(liveTime) * 0.8f;
+		
+		super.tick(delta);
 	}
 	
 	public void draw(Graphics g, float scrollX, float scrollY)

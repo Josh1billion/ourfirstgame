@@ -1,6 +1,9 @@
 package com.orbusoft.ourfirstgame;
 
-public class Entity {
+import com.josh.graphicsengine2d.Image;
+
+public class Entity
+{
 	/*
 	 * Base class for all entities in the game.
 	 * Entities include things like moving enemies, the player character,
@@ -12,4 +15,17 @@ public class Entity {
 	 */
 	
 	//private float x, y;		//position
+	protected Image image;
+	protected float x, y;
+	protected float velX, velY; 	
+	protected int width, height;
+	
+	protected void tick()
+	{
+	}
+	
+	public float distanceTo(Entity other)
+	{
+		return (float) Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.x - other.x, 2));
+	}
 }

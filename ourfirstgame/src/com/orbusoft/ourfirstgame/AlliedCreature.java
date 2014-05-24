@@ -1,5 +1,7 @@
 package com.orbusoft.ourfirstgame;
 
+import com.josh.graphicsengine2d.Globals;
+
 public class AlliedCreature extends Creature
 {
 	/*
@@ -10,12 +12,54 @@ public class AlliedCreature extends Creature
 	
 	/*
 	 * Creatures who are non-hostile / "friendly" towards the player, but do not
-	 * actively follow him around as something similliar to a pet-type character
+	 * actively follow him around as something similar to a pet-type character
 	 * (such as a shopkeeper NPC, for instance), are not allied creatures but rather
 	 * neutral creatures. They should inherit from the NeutralCreature (should we call
 	 * it "PassiveCreature" instead maybe?) class.
 	 * 
 	 * TODO: decide name of PassiveCreature/NeurtralCreature class, and create it.
 	 */
+	
+	AlliedCreature()
+	{
+	}
+	
+	public void tick(float delta)
+	{
+		followPlayer(delta);
+		super.tick();
+	}
+	
+	public void followPlayer(float delta)
+	{
+		float followIfFartherThan = 200.0f;
+		
+		Player player = Globals.game.getPlayer();
+		if (this.distanceTo(player) < followIfFartherThan)
+		{
+			if (velX > 0.0f)
+			{
+				velX -= 1000 * delta;
+				if (velX < 0.0f)
+					velX = 0.0f;
+			}
+			else if (velX < 0.0f)
+			{
+				velX += 1000 * delta;
+				if (velX > 0.0f)
+					velX = 0.0f;
+			}
+			return;
+		}
+
+		if (player.getX() > this.x)
+			velX += 800 * delta;
+		if (player.getX() < this.x)
+			velX -= 800 * delta;
+		if (velX > 800.0f)
+			velX = 800.0f;
+		if (velX < -800.0f)
+			velX = -800.0f;
+	}
 }
 
