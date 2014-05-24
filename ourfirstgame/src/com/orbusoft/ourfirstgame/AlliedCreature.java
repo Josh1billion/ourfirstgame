@@ -20,18 +20,22 @@ public class AlliedCreature extends Creature
 	 * TODO: decide name of PassiveCreature/NeurtralCreature class, and create it.
 	 */
 	
+	float followIfFartherThan = 200.0f;
+	
 	AlliedCreature()
 	{
 	}
 	
 	public void tick(float delta)
 	{
-		followPlayer(delta);
+		followPlayerX(delta);
 		super.tick();
 	}
 	
-	public void followPlayer(float delta)
+	public void followPlayerX(float delta)
 	{
+		
+		
 		float followIfFartherThan = 200.0f;
 		
 		Player player = Globals.game.getPlayer();
@@ -40,26 +44,25 @@ public class AlliedCreature extends Creature
 			if (velX > player.getVelX() + 1000*delta)
 			{
 				velX -= 1000 * delta;
-				if (velX < 0.0f)
-					velX = 0.0f;
+				
 			}
 			else if (velX < player.getVelX() - 1000*delta)
 			{
 				velX += 1000 * delta;
-				if (velX > 0.0f)
-					velX = 0.0f;
+				
 			}
 			return;
 		}
 
 		if (player.getX() > this.x)
-			velX += 3 * this.distanceTo(player) * delta;
+			velX += 800 * delta;
 		if (player.getX() < this.x)
-			velX -= 3 * this.distanceTo(player) * delta;
+			velX -= 800 * delta;
 		if (velX > 1000.0f)
 			velX = 1000.0f;
 		if (velX < -1000.0f)
 			velX = -1000.0f;
 	}
+
 }
 

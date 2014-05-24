@@ -1,13 +1,11 @@
 package com.orbusoft.ourfirstgame;
 import com.josh.graphicsengine2d.*;	
 
-
 //this is just a test class, used to test inheritence and what not.
 
-public class FairyThing extends AlliedCreature
+public class FairyThing extends FlyingAlly
 {
 
-	public float liveTime;
 	
 	public FairyThing(){
 		image = new Image("assets/flything.png", 40, 40);
@@ -16,19 +14,13 @@ public class FairyThing extends AlliedCreature
 		x = 450;
 		width = 40;
 		height = 40;
-		liveTime = 0;
 	}
 	
 	
 	public void tick(float delta)
 	{
-		
-		
 		x += velX * delta;
 		y += velY * delta;
-		liveTime += delta*7;
-		y += (float)Math.sin(liveTime) * 0.8f;
-		
 		super.tick(delta);
 	}
 	

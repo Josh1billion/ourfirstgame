@@ -26,6 +26,27 @@ public class Entity
 	
 	public float distanceTo(Entity other)
 	{
-		return (float) Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.x - other.x, 2));
+		return (float) Math.sqrt(Math.pow((this.x + (this.width/2)) - (other.getX() + (other.getWidth()/2)), 2) + Math.pow((this.x + (this.width/2)) - (other.getX() + (other.getWidth()/2)), 2));
+	}
+	public float deltaX(Entity other)
+	{
+		return (float) this.x + (this.width/2) - other.getX() + (other.getWidth()/2);
+	}
+	public float deltaY(Entity other)
+	{
+		return (float) this.y + (this.height/2) - other.getY() + (other.getHeight()/2);
+	}
+	
+	public float getWidth(){
+		return width;
+	}
+	public float getHeight(){
+		return height;
+	}
+	public float getX(){
+		return x;
+	}
+	public float getY(){
+		return y;
 	}
 }
