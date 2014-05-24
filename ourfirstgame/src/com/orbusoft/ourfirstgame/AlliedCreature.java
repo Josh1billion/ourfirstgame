@@ -37,13 +37,13 @@ public class AlliedCreature extends Creature
 		Player player = Globals.game.getPlayer();
 		if (this.distanceTo(player) < followIfFartherThan)
 		{
-			if (velX > 0.0f)
+			if (velX > player.getVelX() + 1000*delta)
 			{
 				velX -= 1000 * delta;
 				if (velX < 0.0f)
 					velX = 0.0f;
 			}
-			else if (velX < 0.0f)
+			else if (velX < player.getVelX() - 1000*delta)
 			{
 				velX += 1000 * delta;
 				if (velX > 0.0f)
@@ -53,13 +53,13 @@ public class AlliedCreature extends Creature
 		}
 
 		if (player.getX() > this.x)
-			velX += 800 * delta;
+			velX += 3 * this.distanceTo(player) * delta;
 		if (player.getX() < this.x)
-			velX -= 800 * delta;
-		if (velX > 800.0f)
-			velX = 800.0f;
-		if (velX < -800.0f)
-			velX = -800.0f;
+			velX -= 3 * this.distanceTo(player) * delta;
+		if (velX > 1000.0f)
+			velX = 1000.0f;
+		if (velX < -1000.0f)
+			velX = -1000.0f;
 	}
 }
 

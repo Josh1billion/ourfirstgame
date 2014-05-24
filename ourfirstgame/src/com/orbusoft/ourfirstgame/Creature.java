@@ -22,5 +22,4 @@ public class Creature extends Entity{
 	 * HostileCreature class inherits from this Creature class.
 	 */
 	
-	//private float velX, velY;
 }

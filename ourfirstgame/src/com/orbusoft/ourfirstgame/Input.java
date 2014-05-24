@@ -35,10 +35,14 @@ public class Input
 		for (int i = 0; i < 256; i++)
 			if (Gdx.input.isKeyPressed(i))
 			{
-				if (keys[i] > 0)
-					keys[i] = 2;
-				else
-					keys[i] = 1;
+				keys[i] ++;
+				//may 24th 2014: Program can now see exactly how long a key has been pressed for.
+				//old code:
+				/*	if (keys[i] > 0)
+				 *		keys[i] = 2;
+				 *	else
+				 *		keys[i] = 1;
+				 */
 			}
 			else
 				keys[i] = 0;
