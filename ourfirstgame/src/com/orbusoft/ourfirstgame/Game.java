@@ -16,6 +16,7 @@ public class Game
     FairyThing lampy;
     Image background;
     Light torch, lampyGlow;
+    Level level;
     
     float scrollX, scrollY; // camera location
     
@@ -29,6 +30,8 @@ public class Game
 		g = new Graphics();
 		
         g.setAmbientLight(10, 10, 50);
+        
+        level = new Level();
 
         try
         {
@@ -51,7 +54,7 @@ public class Game
 	public void tick(float delta)
 	{
 		// escape key to exit
-		if (Input.keys[Keys.ESCAPE] == 1)
+		if (Input.keys[Keys.ESCAPE] > 0)
 			Gdx.app.exit();
 		
 		if(Input.keys[Keys.S] > 0){
@@ -77,13 +80,20 @@ public class Game
 		scrollX = player.getX() - SCREEN_WIDTH / 2 + player.getWidth() / 2;
 		scrollY = player.getY() - SCREEN_HEIGHT / 2 + player.getHeight() / 2;
 		
+		if (scrollX < 0)
+			scrollX = 0;
+		if (scrollX > 800)
+			scrollX = 800;
+		
 		g.tick(delta);
 	}
 	
 	public void draw()
-	{
+	{	
 		for (int x = -10; x < 11; x++)
 				g.drawImage(background, x * 1920 - scrollX, 0 - scrollY, 1.0f);
+
+		level.draw(g, scrollX, scrollY);
 		player.draw(g, scrollX, scrollY);
 		lampy.draw(g,scrollX,scrollY);
 

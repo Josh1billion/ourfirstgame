@@ -139,7 +139,7 @@ public class Graphics
 			if (diffuseLights[i] != null)
 				diffuseLights[i].activateOnShader(shader, screenX, screenY);
 		
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i <10; i++)
 			if (specularLights[i] != null)
 				specularLights[i].activateOnShader(shader, screenX, screenY);
 	}

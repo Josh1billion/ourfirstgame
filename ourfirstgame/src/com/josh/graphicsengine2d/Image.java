@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Matrix4;
 
 public class Image
 {
+	public static Texture LAST_TEXTURE_BOUND = null;
+	
 	private Texture texture = null;
 	
 	private Mesh quad = null;
@@ -119,7 +121,11 @@ public class Image
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
 		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
 		
-		texture.bind();
+		if (LAST_TEXTURE_BOUND != texture)
+		{
+			LAST_TEXTURE_BOUND = texture;
+			texture.bind();
+		}
 		
 		Matrix4 quadTranslation = new Matrix4(new float[] { 1, 0, 0, x + width/2.0f*scaleX + 0.5f,
 														   0, 1, 0, y + height/2.0f*scaleY + 0.5f,

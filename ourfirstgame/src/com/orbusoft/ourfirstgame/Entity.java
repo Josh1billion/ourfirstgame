@@ -24,29 +24,45 @@ public class Entity
 	{
 	}
 	
+	public float getWidth()
+	{
+		return width;
+	}
+	
+	public float getHeight()
+	{
+		return height;
+	}
+	
+	public float getX()
+	{
+		return x;
+	}
+	
+	public float getY()
+	{
+		return y;
+	}
+	
+	
 	public float distanceTo(Entity other)
 	{
 		return (float) Math.sqrt(Math.pow((this.x + (this.width/2)) - (other.getX() + (other.getWidth()/2)), 2) + Math.pow((this.x + (this.width/2)) - (other.getX() + (other.getWidth()/2)), 2));
 	}
+	
 	public float deltaX(Entity other)
 	{
 		return (float) this.x + (this.width/2) - other.getX() + (other.getWidth()/2);
 	}
+	
 	public float deltaY(Entity other)
 	{
 		return (float) this.y + (this.height/2) - other.getY() + (other.getHeight()/2);
 	}
 	
-	public float getWidth(){
-		return width;
-	}
-	public float getHeight(){
-		return height;
-	}
-	public float getX(){
-		return x;
-	}
-	public float getY(){
-		return y;
+	public boolean collidesWith(Entity other)
+	{
+		return (Math.abs(this.x - other.x) * 2 < (this.width + other.width)) &&
+		         (Math.abs(this.y - other.y) * 2 < (this.height + other.height));
 	}
 }
