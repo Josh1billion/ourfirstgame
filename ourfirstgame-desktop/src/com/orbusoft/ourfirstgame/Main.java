@@ -8,6 +8,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
+		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 		cfg.title = "Our First Game";
 		cfg.useGL20 = true;
 		cfg.width = 1920;

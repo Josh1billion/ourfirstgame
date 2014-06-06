@@ -2,6 +2,7 @@ package com.orbusoft.ourfirstgame;
 
 import com.josh.graphicsengine2d.*;
 import com.josh.graphicsengine2d.Light.LightType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 
 public class Game
@@ -49,6 +50,9 @@ public class Game
 	
 	public void tick(float delta)
 	{
+		// escape key to exit
+		if (Input.keys[Keys.ESCAPE] == 1)
+			Gdx.app.exit();
 		
 		if(Input.keys[Keys.S] > 0){
 			lampyGlow.increaseColors(-150*delta,-150*delta,-150*delta);

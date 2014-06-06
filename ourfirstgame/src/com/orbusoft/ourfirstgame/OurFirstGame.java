@@ -30,6 +30,7 @@ public class OurFirstGame implements ApplicationListener
 		
 		Globals.SCREEN_WIDTH = (int)w;
 		Globals.SCREEN_HEIGHT = (int)h;
+		
         
         Input.init();
 	}
