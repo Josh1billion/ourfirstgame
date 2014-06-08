@@ -159,9 +159,9 @@ public class Image
 		shader.end();
 		
 		// the following three lines fix a weird bug where only all but the last image having its render() method called were being rendered...
-		gl.glActiveTexture(GL20.GL_TEXTURE0);
-		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
-		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
+//		gl.glActiveTexture(GL20.GL_TEXTURE0);
+//		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_S, GL20.GL_REPEAT);
+//		gl.glTexParameteri(GL20.GL_TEXTURE_2D, GL20.GL_TEXTURE_WRAP_T, GL20.GL_REPEAT);
 	}
 	
 	
