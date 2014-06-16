@@ -26,7 +26,7 @@ public class FairyThing extends FlyingAlly
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
 	{
-		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f);
+		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f, (velX < 0.0f), false);
 	}
 	
 	public float getX() { return x; }

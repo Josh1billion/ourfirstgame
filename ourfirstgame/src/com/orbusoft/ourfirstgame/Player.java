@@ -12,10 +12,10 @@ public class Player extends Entity
 	float airResistance = 2000;
 	float acceleration = 4500;
 	float maxRunSpeed = 600;
+	boolean facingRight = true;
 	
 	public Player()
 	{
-		
 		image = new Image("assets/player.png", 128, 192);
 		image.setFrame(0);
 		y = 500;
@@ -25,13 +25,11 @@ public class Player extends Entity
 		frame = 0;
 		width = 128;
 		height = 192;
+		facingRight = true;
 	}
 	
 	public void tick(float delta)
 	{
-		
-		
-		
 		velY += gravity*delta;
 		
 		if (Input.keys[Keys.W] > 0 && Input.keys[Keys.W] < 10)
@@ -39,6 +37,8 @@ public class Player extends Entity
 		
 		if (Input.keys[Keys.A] > 0)
 		{
+			facingRight = false;
+			
 			//if(velX >= maxRunSpeed * delta * -1){
 			//TODO: Fix the above line of code such that the player doesn't keep running at above-max speed
 			//		after getting an FPS drop for one frame.
@@ -50,6 +50,8 @@ public class Player extends Entity
 		}
 		else if (Input.keys[Keys.D] > 0)
 		{
+			facingRight = true;
+			
 			//if(velX <= maxRunSpeed*delta){	//So the player doesn't lose excess speed from slopes or whatever, 
 				//which he might want to use.
 				if(velX < maxRunSpeed - acceleration*delta)
@@ -111,7 +113,7 @@ public class Player extends Entity
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
 	{
-		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f);
+		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f, !facingRight, false);
 	}
 
 	public float getX() { return x; }

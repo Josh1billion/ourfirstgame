@@ -126,6 +126,11 @@ public class Graphics
 		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
 	}
 	
+	public void drawImage(Image image, float x, float y, float alpha, float scaleX, float scaleY, boolean flipHorizontal, boolean flipVertical)
+	{
+		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha, flipHorizontal, flipVertical);
+	}
+	
 	public void drawImageSpecial(Image image, float x, float y, float alpha, float scaleX, float scaleY)
 	{
 		image.render(this, gl, mainImageShader, camera, x, y, scaleX, scaleY, alpha);
@@ -223,6 +228,9 @@ public class Graphics
                 "uniform float scaleY;\n" +
                 "uniform float texOffsetX;\n" +
                 "uniform float texOffsetY;\n" +
+                
+                "uniform float texFlipX;\n" + // set to 1.0f for normal, or -1.0f to flip horizontally 
+                "uniform float texFlipY;\n" +  // set to 1.0f for normal, or -1.0f to flip vertically
             
                 "attribute vec2 a_texCoord0;\n" + 
                 "uniform mat4 u_worldView;\n" +  
@@ -239,6 +247,8 @@ public class Graphics
                 "   v_texCoords = a_texCoord0; \n" +
                 "	v_texCoords[0] += texOffsetX;\n" +
                 "	v_texCoords[1] += texOffsetY;\n" +
+                "	v_texCoords[0] *= texFlipX;\n" +
+                "	v_texCoords[1] *= texFlipY;\n" +
                 
                 "	mat4 scaleMatrix = mat4(vec4(scaleX, 0.0f, 0.0f, 0.0f), vec4(0.0f, scaleY, 0.0f, 0.0f), vec4(0.0f, 0.0f, 1.0f, 0.0f), vec4(0.0f, 0.0f, 0.0f, 1.0f));  \n" +
 

@@ -107,6 +107,11 @@ public class Image
 	
 	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY, float alpha)
 	{
+		render(g, gl, shader, camera, x, y, scaleX, scaleY, alpha, false, false);
+	}
+	
+	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY, float alpha, boolean flipHorizontal, boolean flipVertical)
+	{
 		float repeatCountX = width / imageWidth;
 		float repeatCountY = height / imageHeight;
 		
@@ -139,6 +144,8 @@ public class Image
 		g.uploadFadeLevelToShader(shader); // prepare fading
 		shader.setUniformf("scaleX", scaleX);
 		shader.setUniformf("scaleY", scaleY);
+		shader.setUniformf("texFlipX", (flipHorizontal ? -1.0f : 1.0f));
+		shader.setUniformf("texFlipY", (flipVertical ? -1.0f : 1.0f));
 		shader.setUniformf("alpha", alpha);
 		if (!isSpritesheet)
 		{
