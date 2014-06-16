@@ -109,14 +109,9 @@ public class Player extends Entity
 			image.setFrame(8);
 	}
 	
-	float test = 0.0f;
-	float inc = 0.05f;
 	public void draw(Graphics g, float scrollX, float scrollY)
 	{
-		test += inc;
-		if (test > 1.0f || test < -1.0f)
-			inc *= -1;
-		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, test, 1.0f);
+		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f);
 	}
 
 	public float getX() { return x; }
