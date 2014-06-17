@@ -87,8 +87,12 @@ public class Game
 		
 		if (scrollX < 0)
 			scrollX = 0;
-		if (scrollX > 800)
-			scrollX = 800;
+		if (scrollX > level.getWidthInPixels() - 1920)
+			scrollX = level.getWidthInPixels() - 1920;
+		if (scrollY < 0)
+			scrollY = 0;
+		if (scrollY > level.getHeightInPixels() - 1080)
+			scrollY = level.getHeightInPixels() - 1080;
 		
 		g.tick(delta);
 	}

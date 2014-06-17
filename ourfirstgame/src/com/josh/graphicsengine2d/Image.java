@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
+import com.orbusoft.ourfirstgame.Game;
 
 
 public class Image
@@ -114,6 +115,15 @@ public class Image
 	
 	public void render(Graphics g, GL20 gl, ShaderProgram shader, OrthographicCamera camera, float x, float y, float scaleX, float scaleY, float alpha, boolean flipHorizontal, boolean flipVertical)
 	{
+		if (x + (scaleX * texture.getWidth()) < 0)
+			return;
+		if (x > Game.SCREEN_WIDTH)
+			return;
+		if (y + (scaleY * texture.getHeight()) < 0)
+			return;
+		if (y > Game.SCREEN_HEIGHT)
+			return;
+		
 		float repeatCountX = width / imageWidth;
 		float repeatCountY = height / imageHeight;
 		
