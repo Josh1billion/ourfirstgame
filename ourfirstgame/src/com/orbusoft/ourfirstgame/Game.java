@@ -4,6 +4,7 @@ import com.josh.graphicsengine2d.*;
 import com.josh.graphicsengine2d.Light.LightType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.FPSLogger;
 
 public class Game
 {
@@ -11,6 +12,8 @@ public class Game
     
     public static final int		SCREEN_WIDTH = 1920;
     public static final int		SCREEN_HEIGHT = 1080; // former resolution: 512x416
+    
+    FPSLogger fpsLogger;
     
     private Player player;
     FairyThing lampy;
@@ -27,6 +30,8 @@ public class Game
 	
 	public void init()
 	{
+		fpsLogger = new FPSLogger();
+		
 		g = new Graphics();
 		
         g.setAmbientLight(10, 10, 50);
@@ -89,7 +94,9 @@ public class Game
 	}
 	
 	public void draw()
-	{	
+	{
+		fpsLogger.log();
+		
 		for (int x = -10; x < 11; x++)
 				g.drawImage(background, x * 1920 - scrollX, 0 - scrollY, 1.0f);
 

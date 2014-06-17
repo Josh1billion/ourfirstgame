@@ -43,6 +43,8 @@ public class Image
 		imageWidth = texture.getWidth();
 		imageHeight = texture.getHeight();
 		
+		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear); // should make scaling look nicer.  change to Nearest if not.
+		
 		float repeatCountX = 1.0f;
 		float repeatCountY = 1.0f;
 		

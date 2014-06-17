@@ -160,8 +160,8 @@ public class Graphics
 		float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 		
-		camera = new OrthographicCamera(w, h);
-		camera.setToOrtho(true, w, h);
+		camera = new OrthographicCamera(1920, 1080);
+		camera.setToOrtho(true, 1920, 1080);
 		camera.update();
 		
 		batch = new SpriteBatch();
