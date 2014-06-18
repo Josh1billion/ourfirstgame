@@ -10,10 +10,12 @@ public class Main
 	{
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+		cfg.fullscreen = false;
+		cfg.resizable = false;
 		cfg.title = "Our First Game";
 		cfg.useGL20 = true;
 		
-		// get user's desktop screen resolution
+		// get user's desktop screen resolution 
 		int desktopWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width; 
 		int desktopHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 		
