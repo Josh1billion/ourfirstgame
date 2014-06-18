@@ -52,12 +52,12 @@ public class Entity
 	
 	public float deltaX(Entity other)
 	{
-		return (float) this.x + (this.width/2) - other.getX() + (other.getWidth()/2);
+		return (float) (this.x + (this.width/2)) - (other.getX() + (other.getWidth()/2));
 	}
 	
 	public float deltaY(Entity other)
 	{
-		return (float) this.y + (this.height/2) - other.getY() + (other.getHeight()/2);
+		return (float) (this.y + (this.height/2)) - (other.getY() + (other.getHeight()/2));
 	}
 	
 	public boolean collidesWith(Entity other)

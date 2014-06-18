@@ -1,7 +1,6 @@
 package com.orbusoft.ourfirstgame;
 import com.josh.graphicsengine2d.*;	
 
-//this is just a test class, used to test inheritence and what not.
 
 public class FairyThing extends FlyingAlly
 {
@@ -26,7 +25,7 @@ public class FairyThing extends FlyingAlly
 	
 	public void draw(Graphics g, float scrollX, float scrollY)
 	{
-		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f, (velX < 0.0f), false);
+		g.drawImage(image, x - scrollX, y - scrollY, 1.0f, 1.0f, 1.0f, (deltaX(Globals.game.getPlayer()) > 0), false);
 	}
 	
 	public float getX() { return x; }

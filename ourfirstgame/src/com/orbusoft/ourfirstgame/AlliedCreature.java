@@ -61,15 +61,29 @@ public class AlliedCreature extends Creature
 			}
 			return;
 		}
-
-		if (player.getX() > this.x)
+		
+		if (velX > 800.0f)
+		{
+			velX = 800.0f;
+		}
+		if (velX < -800.0f)
+		{
+			velX = -800.0f;
+		}
+		if (deltaX(player) < 0){
 			velX += 800 * delta;
-		if (player.getX() < this.x)
+			if(velX < player.getVelX()){
+				velX += 2500 * delta;
+				return;
+			}
+		}
+		else if (deltaX(player) > 0){
 			velX -= 800 * delta;
-		if (velX > 1000.0f)
-			velX = 1000.0f;
-		if (velX < -1000.0f)
-			velX = -1000.0f;
+			if(velX > player.getVelX()){
+				velX -= 2500 * delta;
+				return;
+			}
+		}
 	}
 
 }
